@@ -22,13 +22,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
       // title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'NotoSansKR',
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(fontSize: 20),
+          bodyMedium: TextStyle(fontSize: 16),
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
-      home: const MyHomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }

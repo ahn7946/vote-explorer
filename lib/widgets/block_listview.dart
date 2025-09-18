@@ -1,14 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class BlockListWidget extends StatefulWidget {
-  const BlockListWidget({super.key});
+class BlockListView extends StatefulWidget {
+  const BlockListView({super.key});
 
   @override
-  State<BlockListWidget> createState() => _BlockListWidgetState();
+  State<BlockListView> createState() => _BlockListViewState();
 }
 
-class _BlockListWidgetState extends State<BlockListWidget> {
+class _BlockListViewState extends State<BlockListView> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -29,22 +29,27 @@ class _BlockListWidgetState extends State<BlockListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    int blockHeight = 100;
     return SizedBox(
       height: 150,
       child: ListView.builder(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
         itemCount: 50,
-        itemBuilder: (context, index) => BlockContainer(100 - index),
+        itemBuilder: (context, index) => index == 0
+            ? BlockContainer("투표중", color1: Colors.black, color2: Colors.grey)
+            : BlockContainer("# ${blockHeight - index}"),
       ),
     );
   }
 }
 
 class BlockContainer extends StatelessWidget {
-  final int index;
+  final String index;
+  final Color? color1;
+  final Color? color2;
 
-  const BlockContainer(this.index, {super.key});
+  const BlockContainer(this.index, {this.color1, this.color2, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +67,15 @@ class BlockContainer extends StatelessWidget {
             gradient: RadialGradient(
               radius: 0.9,
               colors: [
-                Color(0xFFFF6B6E),
-                Color(0xFFFCA79D),
+                color1 ?? const Color(0xFFFF7679),
+                color2 ?? const Color(0xFFFCA79D),
               ],
               center: Alignment(x, y),
             ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
-        Text("#$index")
+        Text(index)
       ],
     );
   }
