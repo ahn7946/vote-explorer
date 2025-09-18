@@ -9,7 +9,7 @@ class JsonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CodeHighlightView(
-      dummy_json,
+      dummyBlockJSON,
       language: 'json',
       isSelectable: true,
       theme: githubTheme,

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/json_widget.dart';
+import 'package:vote_explorer/widgets/block_list_widget.dart';
 
 class MyHomeScreen extends StatefulWidget {
-  const MyHomeScreen({super.key, required this.title});
-  final String title;
+  const MyHomeScreen({super.key});
 
   @override
   State<MyHomeScreen> createState() => _MyHomeScreenState();
@@ -14,10 +13,20 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(
+          "✓OTING",
+          style: TextStyle(
+              fontFamily: "NotoSansKR",
+              fontSize: 22.4,
+              fontWeight: FontWeight.w700),
+        ),
       ),
-      body: JsonWidget(),
+      body: Column(
+        children: [
+          BlockListWidget(),
+          // JsonWidget(),
+        ],
+      ),
     );
   }
 }

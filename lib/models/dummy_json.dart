@@ -1,4 +1,43 @@
-String dummy_json = '''
+String dummyHeightJSON = '''
+{
+    "success": "true",
+    "message": "Operation successful",
+    "status": "OK",
+    "height": 7
+}
+''';
+
+String dummyFromToJSON = '''
+{
+    "success": "true",
+    "message": "Operation successful",
+    "status": "OK",
+    "from": 0,
+    "to": 5,
+    "headers": [
+        {
+            "voting_id": "GENESIS",
+            "merkle_root": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "height": 0,
+            "prev_block_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+            "voting_id": "찐만두빵",
+            "merkle_root": "595cc19946642bf5a6d48808faf13c51a658a9003f077e3864553a6c51483517",
+            "height": 1,
+            "prev_block_hash": "67df818365d4af91b8f47434118287781eebf39e49290aff9f3d9909ddc7a9c2"
+        },
+        {
+            "voting_id": "잘되나",
+            "merkle_root": "a33b29ec2567f22fab9658d2e6cd3e9d2e924c88ef993d668d545bcdeeb23352",
+            "height": 2,
+            "prev_block_hash": "f33231a148fd7a2269d221822fb17411cb27e192102b4e729f6ea8489c80022d"
+        }
+    ]
+}
+''';
+
+String dummyBlockJSON = '''
 {
     "success": "true",
     "message": "Operation successful",
