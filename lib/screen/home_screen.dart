@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/widgets/block_listview.dart';
-import 'package:vote_explorer/widgets/json_hightlight_view.dart';
-import 'package:vote_explorer/widgets/voting_appbar.dart';
+import 'package:vote_explorer/widget/block_datatable.dart';
+import 'package:vote_explorer/widget/block_listview.dart';
+import 'package:vote_explorer/widget/json_hightlight_view.dart';
+import 'package:vote_explorer/widget/voting_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           BlockListView(),
+          BlockDatatable(),
           JSONHighlightView(),
         ],
       ),

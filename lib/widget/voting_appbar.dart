@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vote_explorer/api/dummy_api.dart';
+import 'package:vote_explorer/style/TextStyle.dart';
 
 class VotingAppBar extends StatefulWidget implements PreferredSizeWidget {
   const VotingAppBar({super.key});
@@ -35,16 +37,12 @@ class _VotingAppBarState extends State<VotingAppBar> {
       height: widget.preferredSize.height,
       padding: const EdgeInsets.symmetric(horizontal: 32),
       decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black))),
+          border: Border(bottom: BorderSide(color: Colors.black26))),
       child: Row(
         children: [
           const Text(
             "✓OTING",
-            style: TextStyle(
-              fontFamily: "NotoSansKR",
-              fontSize: 22.4,
-              fontWeight: FontWeight.w700,
-            ),
+            style: AppTextStyle.voting,
           ),
           const Spacer(),
           Expanded(
@@ -64,17 +62,10 @@ class _VotingAppBarState extends State<VotingAppBar> {
               child: TextField(
                 controller: _searchController,
                 onSubmitted: _handleSearch,
-                style: const TextStyle(
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
+                style: AppTextStyle.searchBar,
                 decoration: InputDecoration(
                   hintText: "투표명 / 블록해시로 조회",
-                  hintStyle: const TextStyle(
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey),
+                  hintStyle: AppTextStyle.searchBarHint,
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: _handleSearch,

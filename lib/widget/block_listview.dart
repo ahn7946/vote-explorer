@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vote_explorer/style/TextStyle.dart';
 
 class BlockListView extends StatefulWidget {
   const BlockListView({super.key});
@@ -75,7 +76,7 @@ class BlockContainer extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
-        Text(index)
+        Text(index, style: AppTextStyle.blockTag),
       ],
     );
   }

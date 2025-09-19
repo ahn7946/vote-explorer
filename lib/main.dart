@@ -1,14 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-import 'screens/home_screen.dart';
+import 'screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  // Override behavior methods and getters like dragDevices
   @override
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
