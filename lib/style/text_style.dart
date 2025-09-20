@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AppTextStyle {
+  static const title = TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
+  );
+
   static const json = TextStyle(
     fontFamily: 'JetbrainsMono',
     fontSize: 16,
   );
 
   static const voting = TextStyle(
-    fontFamily: "NotoSansKR",
     fontSize: 22.4,
     fontWeight: FontWeight.w700,
   );

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/api/dummy_api.dart';
+import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_datatable.dart';
 import 'package:vote_explorer/widget/block_listview.dart';
 import 'package:vote_explorer/widget/json_hightlight_view.dart';
@@ -21,10 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
     double horizontalPadding;
     if (kIsWeb) {
       // 웹일 때만 반응형 규칙 적용
-      horizontalPadding = width > 1000 ? (width - 1000) / 4 : 16.0;
+      horizontalPadding = width > 1000 ? (width - 1000) / 4 : 0;
     } else {
       // 모바일 / 태블릿은 기본 패딩
-      horizontalPadding = 16.0;
+      horizontalPadding = 0;
     }
 
     return Scaffold(
@@ -40,16 +41,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                 child: Text(
                   "블록 현황",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
+                  style: AppTextStyle.title,
                 ),
               ),
             ),
             BlockListView(),
-            BlockDatatable(response: dummyFromToResponseAPI()),
+            BlockDatatable(
+                response:
+                    // homescreen -> initState(), 비동기 적용 필요
+                    dummyFromToResponseAPI()),
             JSONHighlightView(),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/api/dummy_api.dart';
 import 'package:vote_explorer/style/text_style.dart';
@@ -33,51 +34,77 @@ class _VotingAppBarState extends State<VotingAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    int threshold = 650;
+    double horizontalPadding;
+    bool showSpacer;
+    if ((width > threshold) && kIsWeb) {
+      // 웹일 때만 반응형 규칙 적용
+      horizontalPadding = (width / threshold) * 16;
+      showSpacer = true;
+    } else {
+      // 모바일 / 태블릿은 기본 패딩
+      horizontalPadding = 16;
+      showSpacer = false;
+    }
+    bool hideVotingText =
+        _searchController.text.isNotEmpty && !(width > threshold && kIsWeb);
+
     return Container(
       height: widget.preferredSize.height,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black26))),
       child: Row(
         children: [
-          const Text(
-            "✓OTING",
-            style: AppTextStyle.voting,
-          ),
-          const Spacer(),
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    blurRadius: 1,
-                    offset: const Offset(0, 3),
+          if (!hideVotingText)
+            Text(
+              "✓OTING",
+              style: AppTextStyle.voting,
+            ),
+          if (showSpacer) Spacer() else SizedBox(width: horizontalPadding),
+          Flexible(
+            flex: 4,
+            child: Align(
+              alignment: Alignment.center,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 800),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        blurRadius: 1,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: TextField(
-                controller: _searchController,
-                onSubmitted: _handleSearch,
-                style: AppTextStyle.searchBar,
-                decoration: InputDecoration(
-                  hintText: "투표명 / 블록해시로 조회",
-                  hintStyle: AppTextStyle.searchBarHint,
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: _handleSearch,
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (_) => setState(() {}),
+                    onTap: () => setState(() {}),
+                    onSubmitted: _handleSearch,
+                    style: AppTextStyle.searchBar,
+                    decoration: InputDecoration(
+                      hintText: "투표명 / 블록해시로 조회",
+                      hintStyle: AppTextStyle.searchBarHint,
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: _handleSearch,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 20),
+                    ),
                   ),
-                  border: InputBorder.none,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 ),
               ),
             ),
           ),
-          const Spacer(),
+          if (showSpacer) Spacer() else SizedBox(width: horizontalPadding)
         ],
       ),
     );
