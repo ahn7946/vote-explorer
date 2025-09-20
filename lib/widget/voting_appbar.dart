@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/api/dummy_api.dart';
-import 'package:vote_explorer/style/TextStyle.dart';
+import 'package:vote_explorer/style/text_style.dart';
 
 class VotingAppBar extends StatefulWidget implements PreferredSizeWidget {
   const VotingAppBar({super.key});

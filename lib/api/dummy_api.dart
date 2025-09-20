@@ -4,17 +4,20 @@ import 'package:vote_explorer/model/dummy_json.dart';
 import 'package:vote_explorer/model/from_to_response.dart';
 import 'package:vote_explorer/model/height_response.dart';
 
-void dummyHeightResponseAPI() {
+HeightResponse dummyHeightResponseAPI() {
   final heightObj = HeightResponse.fromJson(json.decode(dummyHeightJSON));
   print(heightObj.height); // 7
+  return heightObj;
 }
 
-void dummyFromToResponseAPI() {
+FromToResponse dummyFromToResponseAPI() {
   final fromToObj = FromToResponse.fromJson(json.decode(dummyFromToJSON));
   print(fromToObj.headers.first.votingId); // GENESIS
+  return fromToObj;
 }
 
-void dummyBlockAPI() {
+BlockResponse dummyBlockAPI() {
   final blockObj = BlockResponse.fromJson(json.decode(dummyBlockJSON));
   print(blockObj.block.transactions.length); // 4
+  return blockObj;
 }

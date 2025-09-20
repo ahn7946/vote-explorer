@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/style/TextStyle.dart';
+import 'package:vote_explorer/style/text_style.dart';
 
 class BlockListView extends StatefulWidget {
   const BlockListView({super.key});
@@ -45,7 +45,7 @@ class _BlockListViewState extends State<BlockListView> {
   }
 }
 
-class BlockContainer extends StatelessWidget {
+class BlockContainer extends StatefulWidget {
   final String index;
   final Color? color1;
   final Color? color2;
@@ -53,30 +53,43 @@ class BlockContainer extends StatelessWidget {
   const BlockContainer(this.index, {this.color1, this.color2, super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<BlockContainer> createState() => _BlockContainerState();
+}
+
+class _BlockContainerState extends State<BlockContainer> {
+  late final double x;
+  late final double y;
+
+  @override
+  void initState() {
+    super.initState();
     final random = Random();
     // -1.0 ~ 1.0 범위의 double 값 생성
-    double x = -1 + 2 * random.nextDouble();
-    double y = -1 + 2 * random.nextDouble();
+    x = -1 + 2 * random.nextDouble();
+    y = -1 + 2 * random.nextDouble();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          width: 100,
-          height: 100,
-          margin: EdgeInsets.symmetric(horizontal: 10),
+          width: 85,
+          height: 85,
+          margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             gradient: RadialGradient(
               radius: 0.9,
               colors: [
-                color1 ?? const Color(0xFFFF7679),
-                color2 ?? const Color(0xFFFCA79D),
+                widget.color1 ?? const Color(0xFFFF7679),
+                widget.color2 ?? const Color(0xFFFCA79D),
               ],
               center: Alignment(x, y),
             ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
-        Text(index, style: AppTextStyle.blockTag),
+        Text(widget.index, style: AppTextStyle.blockTag),
       ],
     );
   }
