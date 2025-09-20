@@ -33,13 +33,27 @@ class _BlockListViewState extends State<BlockListView> {
     int blockHeight = 100;
     return SizedBox(
       height: 150,
-      child: ListView.builder(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        itemCount: 50,
-        itemBuilder: (context, index) => index == 0
-            ? BlockContainer("투표중", color1: Colors.black, color2: Colors.grey)
-            : BlockContainer("# ${blockHeight - index}"),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 85 / 2, // Container 높이 절반 위치
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 2, // 선 두께
+              color: Colors.grey.shade400,
+            ),
+          ),
+          ListView.builder(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            itemCount: 50,
+            itemBuilder: (context, index) => index == 0
+                ? BlockContainer("투표중",
+                    color1: Colors.black, color2: Colors.grey)
+                : BlockContainer("# ${blockHeight - index}"),
+          ),
+        ],
       ),
     );
   }
