@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/dummy/dummy_api.dart';
+import 'package:vote_explorer/api/api_service.dart';
+import 'package:vote_explorer/model/from_to_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_datatable.dart';
 import 'package:vote_explorer/widget/block_listview.dart';
-import 'package:vote_explorer/widget/json_hightlight_view.dart';
 import 'package:vote_explorer/widget/voting_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +15,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FromToResponse? _fromToResponse;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFromTo();
+  }
+
+  Future<void> _loadFromTo() async {
+    try {
+      final blockHeightResponse = await ApiService.fetchHeight();
+      int blockHeight = blockHeightResponse.height;
+      final fromToResponse =
+          await ApiService.fetchFromTo(blockHeight - 50, blockHeight);
+      setState(() {
+        _fromToResponse = fromToResponse;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching FromToResponse: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -45,10 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           BlockListView(),
-          BlockDatatable(
-              response:
-                  // homescreen -> initState(), 비동기 적용 필요
-                  dummyFromToResponseAPI()),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _fromToResponse != null
+                  ? BlockDatatable(response: _fromToResponse!)
+                  : const Center(child: Text('데이터를 불러오지 못했습니다')),
           // JSONHighlightView(),
         ],
       ),
