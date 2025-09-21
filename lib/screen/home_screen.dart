@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _isLoading
               ? const Center(child: CircularProgressIndicator())
               : _fromToResponse != null
+                  // 직접 DI, OCP 위배? Singleton / Riverpod 적용 가능
                   ? BlockDatatable(response: _fromToResponse!)
                   : const Center(child: Text('데이터를 불러오지 못했습니다')),
           // JSONHighlightView(),
