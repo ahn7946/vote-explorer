@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/api/dummy_api.dart';
+import 'package:vote_explorer/dummy/dummy_api.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_datatable.dart';
 import 'package:vote_explorer/widget/block_listview.dart';
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: VotingAppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        child: Column(
+        child: ListView(
           children: [
             SizedBox(height: 10),
             const Align(

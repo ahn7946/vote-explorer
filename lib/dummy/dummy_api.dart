@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:vote_explorer/dummy/dummy_block_json.dart';
+import 'package:vote_explorer/dummy/dummy_from_to_json.dart';
+import 'package:vote_explorer/dummy/dummy_height_json.dart';
 import 'package:vote_explorer/model/block_response.dart';
-import 'package:vote_explorer/model/dummy_json.dart';
 import 'package:vote_explorer/model/from_to_response.dart';
 import 'package:vote_explorer/model/height_response.dart';
 
