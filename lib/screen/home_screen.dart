@@ -30,29 +30,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: VotingAppBar(),
-      body: Padding(
+      body: ListView(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        child: ListView(
-          children: [
-            SizedBox(height: 10),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                child: Text(
-                  "블록 현황",
-                  style: AppTextStyle.title,
-                ),
+        children: [
+          SizedBox(height: 10),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+              child: Text(
+                "블록 현황",
+                style: AppTextStyle.title,
               ),
             ),
-            BlockListView(),
-            BlockDatatable(
-                response:
-                    // homescreen -> initState(), 비동기 적용 필요
-                    dummyFromToResponseAPI()),
-            JSONHighlightView(),
-          ],
-        ),
+          ),
+          BlockListView(),
+          BlockDatatable(
+              response:
+                  // homescreen -> initState(), 비동기 적용 필요
+                  dummyFromToResponseAPI()),
+          // JSONHighlightView(),
+        ],
       ),
     );
   }
