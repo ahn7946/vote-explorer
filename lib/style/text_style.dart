@@ -33,4 +33,24 @@ class AppTextStyle {
     fontSize: 16.5,
     fontWeight: FontWeight.w500,
   );
+
+  static const dataColumn = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const dataRow = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+  );
+
+  static const tooltipTitle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const tooltipContent = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+  );
 }

@@ -1,27 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/model/block_header.dart';
 import 'package:vote_explorer/model/from_to_response.dart';
+import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_modal.dart';
+
+const _columnLabels = [
+  '블록 높이',
+  '블록 도메인',
+  '머클 루트',
+  '블록 해시',
+  '이전 블록 해시',
+];
+
+const _widths = [
+  // 각 열 너비 비율 설정 (합 = 1.0)
+  0.1, // 블록 높이
+  0.15, // 블록 도메인
+  0.2333, // 머클 루트
+  0.2333, // 블록 해시
+  0.2333, // 이전 블록 해시
+];
+
+const _columnTooltips = [
+  {
+    "title": "블록 높이란?",
+    "content": "블록체인에서 블록이 생성된 순서를 나타내는 번호입니다.",
+  },
+  {
+    "title": "블록 도메인이란?",
+    "content": "블록(투표)을 가르키기 위한 하나의 별칭이며 블록 해시와 더불어 블록을 구별할 수 있는 하나의 식별자입니다.",
+  },
+  {
+    "title": "머클 루트란?",
+    "content": "블록(투표) 안 트랜잭션(투표지)들을 한 줄로 정리한 무결성 체크용 해시값 입니다.",
+  },
+  {
+    "title": "블록 해시란?",
+    "content": "블록(투표) 전체 데이터를 해시한 고유 식별자입니다.",
+  },
+  {
+    "title": "이전 블록 해시란?",
+    "content": "해당 블록(투표) 이전의 블록 전체 데이터를 해시한 고유 식별자입니다.",
+  },
+];
 
 class BlockDatatable extends StatelessWidget {
   final FromToResponse response;
-
-  static const _columnLabels = [
-    '블록 높이',
-    '블록 도메인',
-    '머클 루트',
-    '블록 해시',
-    '이전 블록 해시',
-  ];
-
-  static const _widths = [
-    // 각 열 너비 비율 설정 (합 = 1.0)
-    0.1, // 블록 높이
-    0.15, // 블록 도메인
-    0.2333, // 머클 루트
-    0.2333, // 블록 해시
-    0.2333, // 이전 블록 해시
-  ];
 
   const BlockDatatable({super.key, required this.response});
 
@@ -32,6 +56,7 @@ class BlockDatatable extends StatelessWidget {
         text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis, // ...
+        style: AppTextStyle.dataRow,
       ),
     );
   }
@@ -62,9 +87,23 @@ class BlockDatatable extends StatelessWidget {
         child: DataTable(
           showCheckboxColumn: false,
           onSelectAll: null,
-          columns: _columnLabels
-              .map((label) => DataColumn(label: Text(label)))
-              .toList(),
+          columns: List.generate(_columnLabels.length, (i) {
+            return DataColumn(
+              label: Row(
+                children: [
+                  Text(
+                    _columnLabels[i],
+                    style: AppTextStyle.dataColumn,
+                  ),
+                  const SizedBox(width: 4),
+                  ColumnTooltip(
+                    title: _columnTooltips[i]["title"]!,
+                    content: _columnTooltips[i]["content"]!,
+                  ),
+                ],
+              ),
+            );
+          }),
           rows: response.headers.reversed.map((header) {
             final values = [
               header.height.toString(),
@@ -78,7 +117,7 @@ class BlockDatatable extends StatelessWidget {
               cells: List.generate(values.length, (i) {
                 // 블록 높이는 생략 없이 보여주고 나머지만 ellipsis 적용
                 final textWidget = (i == 0)
-                    ? Text(values[i])
+                    ? Text(values[i], style: AppTextStyle.dataRow)
                     : _buildEllipsedText(values[i], columnWidths[i]);
                 return DataCell(textWidget);
               }),
@@ -87,5 +126,45 @@ class BlockDatatable extends StatelessWidget {
         ),
       );
     });
+  }
+}
+
+class ColumnTooltip extends StatelessWidget {
+  final String title;
+  final String content;
+
+  const ColumnTooltip({
+    super.key,
+    required this.title,
+    required this.content,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      richMessage: TextSpan(
+        children: [
+          TextSpan(
+            text: '$title\n',
+            style: AppTextStyle.tooltipTitle,
+          ),
+          TextSpan(
+            text: content,
+            style: AppTextStyle.tooltipContent,
+          ),
+        ],
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(8),
+      waitDuration: const Duration(milliseconds: 300),
+      child: const Icon(
+        Icons.info_outline,
+        size: 18,
+        color: Colors.black54,
+      ),
+    );
   }
 }
