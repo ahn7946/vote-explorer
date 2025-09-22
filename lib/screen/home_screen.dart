@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/core/api/api_service.dart';
-import 'package:vote_explorer/model/from_to_response.dart';
+import 'package:vote_explorer/core/model/from_to_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_datatable.dart';
 import 'package:vote_explorer/widget/block_listview.dart';

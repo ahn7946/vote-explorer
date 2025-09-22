@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:code_highlight_view/code_highlight_view.dart';
 import 'package:code_highlight_view/themes/github.dart';
-import 'package:vote_explorer/dummy/dummy_block_json.dart';
+import 'package:vote_explorer/core/dummy/dummy_block_json.dart';
 import 'package:vote_explorer/style/text_style.dart';
 
 class JSONHighlightView extends StatelessWidget {

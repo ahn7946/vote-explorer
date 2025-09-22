@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/model/block_header.dart';
+import 'package:vote_explorer/core/model/block_header.dart';
 
 class BlockModalContent extends StatelessWidget {
   final BlockHeader header;
-  const BlockModalContent({required BlockHeader this.header, super.key});
+  const BlockModalContent({required this.header, super.key});
 
   @override
   Widget build(BuildContext context) {

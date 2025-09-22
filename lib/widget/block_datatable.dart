@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/model/block_header.dart';
-import 'package:vote_explorer/model/from_to_response.dart';
+import 'package:vote_explorer/core/model/block_header.dart';
+import 'package:vote_explorer/core/model/from_to_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_modal.dart';
 

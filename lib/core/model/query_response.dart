@@ -1,4 +1,4 @@
-import 'package:vote_explorer/model/block_header.dart';
+import 'package:vote_explorer/core/model/block_header.dart';
 
 class QueryResponse {
   final bool success;

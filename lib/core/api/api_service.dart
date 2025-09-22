@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:vote_explorer/model/block_response.dart';
-import 'package:vote_explorer/model/from_to_response.dart';
-import 'package:vote_explorer/model/height_response.dart';
-import 'package:vote_explorer/model/pending_response.dart';
-import 'package:vote_explorer/model/query_response.dart';
-import 'package:vote_explorer/model/txx_id_response.dart';
+import 'package:vote_explorer/core/logger/logger.dart';
+import 'package:vote_explorer/core/model/block_response.dart';
+import 'package:vote_explorer/core/model/from_to_response.dart';
+import 'package:vote_explorer/core/model/height_response.dart';
+import 'package:vote_explorer/core/model/pending_response.dart';
+import 'package:vote_explorer/core/model/query_response.dart';
+import 'package:vote_explorer/core/model/txx_id_response.dart';
 
 class ApiService {
   static final Dio _dio = Dio(
@@ -21,8 +22,15 @@ class ApiService {
   ///
   /// Returns [HeightResponse] - 현재 블록 높이 정보
   static Future<HeightResponse> fetchHeight() async {
-    final response = await _dio.get('/height');
-    return HeightResponse.fromJson(response.data);
+    try {
+      final response = await _dio.get('/height');
+      final result = HeightResponse.fromJson(response.data);
+      logger.i('[API SUCCESS] HeightResponse 호출 완료');
+      return result;
+    } catch (e, st) {
+      logger.e('[API ERROR] HeightResponse 호출 실패', error: e, stackTrace: st);
+      rethrow;
+    }
   }
 
   /// API: `GET /headers?from={a}&to={b}`
@@ -34,8 +42,16 @@ class ApiService {
   ///
   /// Returns [FromToResponse] - 지정된 범위의 블록 헤더 리스트
   static Future<FromToResponse> fetchFromTo(int a, int b) async {
-    final response = await _dio.get('/headers?from=$a&to=$b');
-    return FromToResponse.fromJson(response.data);
+    try {
+      final response = await _dio.get('/headers?from=$a&to=$b');
+      final result = FromToResponse.fromJson(response.data);
+      logger.i('[API SUCCESS] FromToResponse 호출 완료 (from: $a, to: $b)');
+      return result;
+    } catch (e, st) {
+      logger.e('[API ERROR] FromToResponse 호출 실패 (from: $a, to: $b)',
+          error: e, stackTrace: st);
+      rethrow;
+    }
   }
 
   /// API: `GET /block?height={blockHeight}`
@@ -46,8 +62,16 @@ class ApiService {
   ///
   /// Returns [BlockResponse] - 블록 상세 정보
   static Future<BlockResponse> fetchBlock(String blockHeight) async {
-    final response = await _dio.get('/block?height=$blockHeight');
-    return BlockResponse.fromJson(response.data);
+    try {
+      final response = await _dio.get('/block?height=$blockHeight');
+      final result = BlockResponse.fromJson(response.data);
+      logger.i('[API SUCCESS] BlockResponse 호출 완료 (height: $blockHeight)');
+      return result;
+    } catch (e, st) {
+      logger.e('[API ERROR] BlockResponse 호출 실패 (height: $blockHeight)',
+          error: e, stackTrace: st);
+      rethrow;
+    }
   }
 
   /// API: `GET /query?target={query}`
@@ -58,8 +82,16 @@ class ApiService {
   ///
   /// Returns [QueryResponse] - 조회된 블록 정보
   static Future<QueryResponse> fetchQuery(String query) async {
-    final response = await _dio.get('/query?target=$query');
-    return QueryResponse.fromJson(response.data);
+    try {
+      final response = await _dio.get('/query?target=$query');
+      final result = QueryResponse.fromJson(response.data);
+      logger.i('[API SUCCESS] QueryResponse 호출 완료 (query: $query)');
+      return result;
+    } catch (e, st) {
+      logger.e('[API ERROR] QueryResponse 호출 실패 (query: $query)',
+          error: e, stackTrace: st);
+      rethrow;
+    }
   }
 
   /// API: `GET /explorer/mempool/pending`
@@ -68,8 +100,15 @@ class ApiService {
   ///
   /// Returns [PendingResponse] - 대기 중인 트랜잭션 목록
   static Future<PendingResponse> fetchPending() async {
-    final response = await _dio.get('/explorer/mempool/pending');
-    return PendingResponse.fromJson(response.data);
+    try {
+      final response = await _dio.get('/explorer/mempool/pending');
+      final result = PendingResponse.fromJson(response.data);
+      logger.i('[API SUCCESS] PendingResponse 호출 완료');
+      return result;
+    } catch (e, st) {
+      logger.e('[API ERROR] PendingResponse 호출 실패', error: e, stackTrace: st);
+      rethrow;
+    }
   }
 
   /// API: `GET /explorer/mempool/txx?id={id}`
@@ -80,7 +119,15 @@ class ApiService {
   ///
   /// Returns [TxxResponse] - 해당 도메인의 트랜잭션 정보
   static Future<TxxResponse> fetchTxxId(String id) async {
-    final response = await _dio.get('/explorer/mempool/txx?id=$id');
-    return TxxResponse.fromJson(response.data);
+    try {
+      final response = await _dio.get('/explorer/mempool/txx?id=$id');
+      final result = TxxResponse.fromJson(response.data);
+      logger.i('[API SUCCESS] TxxResponse 호출 완료 (id: $id)');
+      return result;
+    } catch (e, st) {
+      logger.e('[API ERROR] TxxResponse 호출 실패 (id: $id)',
+          error: e, stackTrace: st);
+      rethrow;
+    }
   }
 }
