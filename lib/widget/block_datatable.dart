@@ -97,7 +97,7 @@ class BlockDatatable extends StatelessWidget {
                     _columnLabels[i],
                     style: AppTextStyle.dataColumn,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 5),
                   ColumnTooltip(
                     title: _columnTooltips[i]["title"]!,
                     content: _columnTooltips[i]["content"]!,

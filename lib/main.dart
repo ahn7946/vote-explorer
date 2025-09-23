@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
       scrollBehavior: MyCustomScrollBehavior(),
       // title: 'Flutter Demo',
       theme: ThemeData(
-        fontFamily: 'NotoSansKR',
         textTheme: const TextTheme(
           titleMedium: TextStyle(fontSize: 20),
           bodyMedium: TextStyle(fontSize: 16),
