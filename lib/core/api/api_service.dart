@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:vote_explorer/core/config/config.dart';
 import 'package:vote_explorer/core/logger/logger.dart';
 import 'package:vote_explorer/core/model/dto/block_response.dart';
 import 'package:vote_explorer/core/model/dto/from_to_response.dart';
@@ -10,7 +11,7 @@ import 'package:vote_explorer/core/model/dto/txx_id_response.dart';
 class ApiService {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'http://l4.ai-capstone.store:8081/explorer',
+      baseUrl: AppConfig.baseURL,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
     ),
