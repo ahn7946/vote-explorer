@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:vote_explorer/core/logger/logger.dart';
-import 'package:vote_explorer/core/model/block_response.dart';
-import 'package:vote_explorer/core/model/from_to_response.dart';
-import 'package:vote_explorer/core/model/height_response.dart';
-import 'package:vote_explorer/core/model/pending_response.dart';
-import 'package:vote_explorer/core/model/query_response.dart';
-import 'package:vote_explorer/core/model/txx_id_response.dart';
+import 'package:vote_explorer/core/model/dto/block_response.dart';
+import 'package:vote_explorer/core/model/dto/from_to_response.dart';
+import 'package:vote_explorer/core/model/dto/height_response.dart';
+import 'package:vote_explorer/core/model/dto/pending_response.dart';
+import 'package:vote_explorer/core/model/dto/query_response.dart';
+import 'package:vote_explorer/core/model/dto/txx_id_response.dart';
 
 class ApiService {
   static final Dio _dio = Dio(

@@ -1,4 +1,4 @@
-import 'package:vote_explorer/core/model/block_header.dart';
+import 'package:vote_explorer/core/model/entity/block_headers.dart';
 
 class FromToResponse {
   final bool success;
@@ -6,7 +6,7 @@ class FromToResponse {
   final String status;
   final int from;
   final int to;
-  final List<BlockHeader> headers;
+  final List<BlockHeaders> headers;
 
   FromToResponse({
     required this.success,
@@ -25,7 +25,7 @@ class FromToResponse {
       from: json['from'],
       to: json['to'],
       headers: (json['headers'] as List)
-          .map((e) => BlockHeader.fromJson(e))
+          .map((e) => BlockHeaders.fromJson(e))
           .toList(),
     );
   }

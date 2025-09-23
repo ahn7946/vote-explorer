@@ -1,4 +1,4 @@
-class BlockHeader {
+class BlockHeaders {
   final String votingId;
   final String proposer;
   final String merkleRoot;
@@ -6,7 +6,7 @@ class BlockHeader {
   final String blockHash;
   final String prevBlockHash;
 
-  BlockHeader({
+  BlockHeaders({
     required this.votingId,
     required this.proposer,
     required this.merkleRoot,
@@ -15,8 +15,8 @@ class BlockHeader {
     required this.prevBlockHash,
   });
 
-  factory BlockHeader.fromJson(Map<String, dynamic> json) {
-    return BlockHeader(
+  factory BlockHeaders.fromJson(Map<String, dynamic> json) {
+    return BlockHeaders(
       votingId: json['voting_id'],
       proposer: json['proposer'],
       merkleRoot: json['merkle_root'],

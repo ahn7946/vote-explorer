@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/core/model/block_response.dart';
+import 'package:vote_explorer/core/model/dto/block_response.dart';
 
 class BlockAlertDialog extends StatelessWidget {
   final BlockResponse response;
@@ -7,6 +7,7 @@ class BlockAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final blockHash = response.block.blockHash;
     final header = response.block.header;
 
     Widget buildRow(String label, String value) {
@@ -45,7 +46,7 @@ class BlockAlertDialog extends StatelessWidget {
             buildRow("Voting ID", header.votingId),
             buildRow("Proposer", header.proposer),
             buildRow("Merkle Root", header.merkleRoot),
-            buildRow("Block Hash", header.blockHash),
+            buildRow("Block Hash", blockHash),
             buildRow("Prev Block Hash", header.prevBlockHash),
           ],
         ),

@@ -1,5 +1,3 @@
-import 'package:vote_explorer/core/model/block_header.dart';
-
 class BlockResponse {
   final bool success;
   final String message;
@@ -41,6 +39,32 @@ class Block {
       transactions: (json['transactions'] as List)
           .map((e) => Transaction.fromJson(e))
           .toList(),
+    );
+  }
+}
+
+class BlockHeader {
+  final String votingId;
+  final String proposer;
+  final String merkleRoot;
+  final int height;
+  final String prevBlockHash;
+
+  BlockHeader({
+    required this.votingId,
+    required this.proposer,
+    required this.merkleRoot,
+    required this.height,
+    required this.prevBlockHash,
+  });
+
+  factory BlockHeader.fromJson(Map<String, dynamic> json) {
+    return BlockHeader(
+      votingId: json['voting_id'],
+      proposer: json['proposer'],
+      merkleRoot: json['merkle_root'],
+      height: json['height'],
+      prevBlockHash: json['prev_block_hash'],
     );
   }
 }

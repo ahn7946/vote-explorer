@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/core/api/api_service.dart';
-import 'package:vote_explorer/core/model/block_header.dart';
-import 'package:vote_explorer/core/model/block_response.dart';
-import 'package:vote_explorer/core/model/from_to_response.dart';
+import 'package:vote_explorer/core/model/dto/block_response.dart';
+import 'package:vote_explorer/core/model/dto/from_to_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_modal.dart';
 
@@ -118,9 +117,9 @@ class BlockDatatable extends StatelessWidget {
             ];
             return DataRow(
               onSelectChanged: (_) async {
-                final block =
+                final response =
                     await ApiService.fetchBlock(header.height.toString());
-                _showDetailDialog(context, block);
+                _showDetailDialog(context, response);
               },
               cells: List.generate(values.length, (i) {
                 // 블록 높이는 생략 없이 보여주고 나머지만 ellipsis 적용
