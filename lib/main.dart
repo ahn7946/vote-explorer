@@ -1,8 +1,22 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'screen/home_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 로컬 폰트 강제 프리로드
+  final jetbrainsLoader = FontLoader('JetBrainsMono')
+    ..addFont(rootBundle.load('assets/fonts/JetBrainsMono-wght.ttf'));
+  final notoSansLoader = FontLoader('NotoSansKR')
+    ..addFont(rootBundle.load('assets/fonts/NotoSansKR-VariableFont_wght.ttf'));
+
+  await Future.wait([
+    jetbrainsLoader.load(),
+    notoSansLoader.load(),
+  ]);
+
   runApp(const MyApp());
 }
 

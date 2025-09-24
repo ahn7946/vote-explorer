@@ -30,16 +30,16 @@ class AppTextStyle {
   );
 
   static const blockTag = TextStyle(
-    fontSize: 16.5,
+    fontSize: 18,
     fontWeight: FontWeight.w500,
   );
 
-  static const dataColumn = TextStyle(
-    fontSize: 20,
+  static const tableAttribute = TextStyle(
+    fontSize: 18,
     fontWeight: FontWeight.w600,
   );
 
-  static const dataRow = TextStyle(
+  static const tableTuple = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w400,
   );

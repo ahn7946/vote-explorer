@@ -1,4 +1,6 @@
 class AppConfig {
+  static int fetchSize = 20;
+
   static String get baseURL {
     const bool isProduction = bool.fromEnvironment('dart.vm.product');
     if (isProduction) {

@@ -1,9 +1,15 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vote_explorer/core/api/api_service.dart';
+import 'package:vote_explorer/core/model/dto/block_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
+import 'package:vote_explorer/widget/block_alert_dialog.dart';
 
+// tight coupling / prop drilling -> provider 적용 필요
 class BlockListView extends StatefulWidget {
-  const BlockListView({super.key});
+  final int blockHeight;
+
+  const BlockListView(this.blockHeight, {super.key});
 
   @override
   State<BlockListView> createState() => _BlockListViewState();
@@ -30,7 +36,6 @@ class _BlockListViewState extends State<BlockListView> {
 
   @override
   Widget build(BuildContext context) {
-    int blockHeight = 100;
     return SizedBox(
       height: 150,
       child: Stack(
@@ -51,7 +56,7 @@ class _BlockListViewState extends State<BlockListView> {
             itemBuilder: (context, index) => index == 0
                 ? BlockContainer("투표중",
                     color1: Colors.black, color2: Colors.grey)
-                : BlockContainer("# ${blockHeight - index}"),
+                : BlockContainer("${widget.blockHeight - index + 1}"),
           ),
         ],
       ),
@@ -60,11 +65,11 @@ class _BlockListViewState extends State<BlockListView> {
 }
 
 class BlockContainer extends StatefulWidget {
-  final String index;
+  final String blockIndex;
   final Color? color1;
   final Color? color2;
 
-  const BlockContainer(this.index, {this.color1, this.color2, super.key});
+  const BlockContainer(this.blockIndex, {this.color1, this.color2, super.key});
 
   @override
   State<BlockContainer> createState() => _BlockContainerState();
@@ -83,27 +88,44 @@ class _BlockContainerState extends State<BlockContainer> {
     y = -1 + 2 * random.nextDouble();
   }
 
+  void _showDetailDialog(BuildContext context, BlockResponse response) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return BlockAlertDialog(response);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 85,
-          height: 85,
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              radius: 0.9,
-              colors: [
-                widget.color1 ?? const Color(0xFFFF7679),
-                widget.color2 ?? const Color(0xFFFCA79D),
-              ],
-              center: Alignment(x, y),
+        InkResponse(
+          containedInkWell: false, // 영역 제한 해제
+          onTap: () async {
+            final response = await ApiService.fetchBlock(widget.blockIndex);
+            _showDetailDialog(context, response);
+          },
+          child: Container(
+            width: 85,
+            height: 85,
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                radius: 0.9,
+                colors: [
+                  widget.color1 ?? const Color(0xFFFF7679),
+                  widget.color2 ?? const Color(0xFFFCA79D),
+                ],
+                center: Alignment(x, y),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
-        Text(widget.index, style: AppTextStyle.blockTag),
+        Text(widget.blockIndex, style: AppTextStyle.blockTag),
       ],
     );
   }

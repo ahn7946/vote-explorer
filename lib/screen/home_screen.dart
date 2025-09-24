@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/core/api/api_service.dart';
+import 'package:vote_explorer/core/config/config.dart';
 import 'package:vote_explorer/core/model/dto/from_to_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
+import 'package:vote_explorer/widget/block_customtable.dart';
 import 'package:vote_explorer/widget/block_datatable.dart';
 import 'package:vote_explorer/widget/block_listview.dart';
 import 'package:vote_explorer/widget/voting_appbar.dart';
@@ -15,22 +17,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int? _blockHeight;
   FromToResponse? _fromToResponse;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadFromTo();
+    _initBlockInformation();
   }
 
-  Future<void> _loadFromTo() async {
+  Future<void> _initBlockInformation() async {
     try {
-      final blockHeightResponse = await ApiService.fetchHeight();
-      int blockHeight = blockHeightResponse.height;
-      final fromToResponse =
-          await ApiService.fetchFromTo(blockHeight - 50, blockHeight);
+      final blockHeightResponse = (await ApiService.fetchHeight()).height;
+      final fromToResponse = await ApiService.fetchFromTo(
+          blockHeightResponse - AppConfig.fetchSize, blockHeightResponse);
       setState(() {
+        _blockHeight = blockHeightResponse;
         _fromToResponse = fromToResponse;
         _isLoading = false;
       });
@@ -71,13 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          BlockListView(),
-          _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _fromToResponse != null
-                  // 직접 DI, OCP 위배? Singleton / Riverpod 적용 가능
-                  ? BlockDatatable(response: _fromToResponse!)
-                  : const Center(child: Text('데이터를 불러오지 못했습니다')),
+          // OCP 위배 / coupling 발생, DI -> provider 적용 필요
+          if (_isLoading)
+            const Center(child: CircularProgressIndicator())
+          else if (_fromToResponse != null) ...[
+            BlockListView(_blockHeight!),
+            // BlockCustomTable(_fromToResponse!),
+            BlockDatatable(_fromToResponse!),
+          ] else
+            const Center(child: Text('데이터를 불러오지 못했습니다')),
           // JSONHighlightView(),
         ],
       ),

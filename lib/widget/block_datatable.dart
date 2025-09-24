@@ -3,7 +3,7 @@ import 'package:vote_explorer/core/api/api_service.dart';
 import 'package:vote_explorer/core/model/dto/block_response.dart';
 import 'package:vote_explorer/core/model/dto/from_to_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
-import 'package:vote_explorer/widget/block_modal.dart';
+import 'package:vote_explorer/widget/block_alert_dialog.dart';
 
 const _columnLabels = [
   '블록 높이',
@@ -54,7 +54,7 @@ const _columnTooltips = [
 class BlockDatatable extends StatelessWidget {
   final FromToResponse response;
 
-  const BlockDatatable({super.key, required this.response});
+  const BlockDatatable(this.response, {super.key});
 
   SizedBox _buildEllipsedText(String text, double width) {
     return SizedBox(
@@ -63,7 +63,7 @@ class BlockDatatable extends StatelessWidget {
         text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis, // ...
-        style: AppTextStyle.dataRow,
+        style: AppTextStyle.tableTuple,
       ),
     );
   }
@@ -91,19 +91,23 @@ class BlockDatatable extends StatelessWidget {
           onSelectAll: null,
           columns: List.generate(_columnLabels.length, (i) {
             return DataColumn(
-              label: Row(
-                children: [
-                  Text(
-                    _columnLabels[i],
-                    style: AppTextStyle.dataColumn,
-                  ),
-                  const SizedBox(width: 5),
-                  ColumnTooltip(
-                    title: _columnTooltips[i]["title"]!,
-                    content: _columnTooltips[i]["content"]!,
-                  ),
-                ],
+              label: Text(
+                _columnLabels[i],
+                style: AppTextStyle.tableAttribute,
               ),
+              // Row(
+              //   children: [
+              //     Text(
+              //       _columnLabels[i],
+              //       style: AppTextStyle.attribute,
+              //     ),
+              //     const SizedBox(width: 5),
+              //     ColumnTooltip(
+              //       title: _columnTooltips[i]["title"]!,
+              //       content: _columnTooltips[i]["content"]!,
+              //     ),
+              //   ],
+              // ),
             );
           }),
           rows: response.headers.reversed.map((header) {
@@ -124,7 +128,7 @@ class BlockDatatable extends StatelessWidget {
               cells: List.generate(values.length, (i) {
                 // 블록 높이는 생략 없이 보여주고 나머지만 ellipsis 적용
                 final textWidget = (i == 0)
-                    ? Text(values[i], style: AppTextStyle.dataRow)
+                    ? Text(values[i], style: AppTextStyle.tableTuple)
                     : _buildEllipsedText(values[i], columnWidths[i]);
                 return DataCell(textWidget);
               }),
