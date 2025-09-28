@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:vote_explorer/core/api/api_service.dart';
+import 'package:vote_explorer/core/config/config.dart';
 import 'package:vote_explorer/core/model/dto/block_response.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_alert_dialog.dart';
@@ -17,19 +18,19 @@ class BlockListView extends StatefulWidget {
 
 class _BlockListViewState extends State<BlockListView> {
   final ScrollController _scrollController = ScrollController();
+  int _visibleCount = AppConfig.fetchSize;
 
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent ==
-          _scrollController.offset) {
-        showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-            content: Text("END"),
-          ),
-        );
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        setState(() {
+          _visibleCount =
+              min(widget.blockHeight, _visibleCount + AppConfig.fetchSize);
+        });
       }
     });
   }
@@ -52,11 +53,22 @@ class _BlockListViewState extends State<BlockListView> {
           ListView.builder(
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
-            itemCount: 50,
-            itemBuilder: (context, index) => index == 0
-                ? BlockContainer("투표중",
-                    color1: Colors.black, color2: Colors.grey)
-                : BlockContainer("${widget.blockHeight - index + 1}"),
+            itemCount: _visibleCount + 2, // 투표 중, 제네시스 블록
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return BlockContainer(
+                  "투표중",
+                  color1: Colors.black,
+                  color2: Colors.grey,
+                );
+              }
+
+              final blockNumber = widget.blockHeight - (index - 1);
+              if (blockNumber < 0) {
+                return const SizedBox();
+              }
+              return BlockContainer(blockNumber.toString());
+            },
           ),
         ],
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:vote_explorer/core/config/config.dart';
 import 'package:vote_explorer/style/text_style.dart';
 
 class VotingAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -58,9 +60,12 @@ class _VotingAppBarState extends State<VotingAppBar> {
       child: Row(
         children: [
           if (!hideVotingText)
-            Text(
-              "✓OTING",
-              style: AppTextStyle.voting,
+            GestureDetector(
+              onTap: () => launchUrl(Uri.parse(AppConfig.homeURL)),
+              child: Text(
+                "✓OTING",
+                style: AppTextStyle.voting,
+              ),
             ),
           if (showSpacer) Spacer() else SizedBox(width: horizontalPadding),
           Flexible(

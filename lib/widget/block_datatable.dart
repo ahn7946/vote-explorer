@@ -91,23 +91,24 @@ class BlockDatatable extends StatelessWidget {
           onSelectAll: null,
           columns: List.generate(_columnLabels.length, (i) {
             return DataColumn(
-              label: Text(
-                _columnLabels[i],
-                style: AppTextStyle.tableAttribute,
+              label:
+                  // Text(
+                  //   _columnLabels[i],
+                  //   style: AppTextStyle.tableAttribute,
+                  // ),
+                  Row(
+                children: [
+                  Text(
+                    _columnLabels[i],
+                    style: AppTextStyle.tableAttribute,
+                  ),
+                  const SizedBox(width: 5),
+                  ColumnTooltip(
+                    title: _columnTooltips[i]["title"]!,
+                    content: _columnTooltips[i]["content"]!,
+                  ),
+                ],
               ),
-              // Row(
-              //   children: [
-              //     Text(
-              //       _columnLabels[i],
-              //       style: AppTextStyle.attribute,
-              //     ),
-              //     const SizedBox(width: 5),
-              //     ColumnTooltip(
-              //       title: _columnTooltips[i]["title"]!,
-              //       content: _columnTooltips[i]["content"]!,
-              //     ),
-              //   ],
-              // ),
             );
           }),
           rows: response.headers.reversed.map((header) {
