@@ -10,9 +10,7 @@ class BlockAlertDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // fetch 실행 (현재 방식 유지)
-    ref.read(blockProvider.notifier).fetchBlock(blockHeight);
-    final BlockResponse? blockResponse = ref.read(blockProvider);
+    final BlockResponse? blockResponse = ref.watch(blockProvider);
 
     Widget buildRow(String label, String value) {
       return Padding(

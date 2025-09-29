@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 16),
         ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
+        useMaterial3: false,
       ),
       home: HomeScreen(),
     );

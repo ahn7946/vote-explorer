@@ -14,8 +14,10 @@ class QueryNotifier extends Notifier<QueryResponse?> {
   QueryResponse? build() => null;
 
   /// 블록 도메인/해시/머클루트 조회
-  Future<void> fetchQuery(String query) async {
+  Future<QueryResponse?> fetchQuery(String query) async {
+    state = null;
     state = await ApiService.fetchQuery(query);
+    return state;
   }
 }
 

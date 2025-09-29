@@ -14,8 +14,10 @@ class PendingNotifier extends Notifier<PendingResponse?> {
   PendingResponse? build() => null;
 
   /// 대기 중인 트랜잭션 조회
-  Future<void> fetchPending() async {
+  Future<PendingResponse?> fetchPending() async {
+    state = null;
     state = await ApiService.fetchPending();
+    return state;
   }
 }
 

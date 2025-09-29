@@ -14,8 +14,10 @@ class TxxNotifier extends Notifier<TxxResponse?> {
   TxxResponse? build() => null;
 
   /// 특정 도메인 내 트랜잭션 조회
-  Future<void> fetchTxxId(String id) async {
+  Future<TxxResponse?> fetchTxxId(String id) async {
+    state = null;
     state = await ApiService.fetchTxxId(id);
+    return state;
   }
 }
 

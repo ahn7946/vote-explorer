@@ -14,8 +14,10 @@ class FromToNotifier extends Notifier<FromToResponse?> {
   FromToResponse? build() => null;
 
   /// 특정 구간의 블록 헤더 조회
-  Future<void> fetchFromTo(int from, int to) async {
+  Future<FromToResponse?> fetchFromTo(int from, int to) async {
+    state = null;
     state = await ApiService.fetchFromTo(from, to);
+    return state;
   }
 }
 

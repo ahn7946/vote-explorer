@@ -14,8 +14,9 @@ class HeightNotifier extends Notifier<HeightResponse?> {
   HeightResponse? build() => null;
 
   /// 현재 블록 높이 조회 API 호출
-  Future<void> fetchHeight() async {
+  Future<HeightResponse?> fetchHeight() async {
     state = await ApiService.fetchHeight();
+    return state;
   }
 }
 

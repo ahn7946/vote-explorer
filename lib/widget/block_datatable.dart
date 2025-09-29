@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vote_explorer/provider/block_provider.dart';
 import 'package:vote_explorer/provider/from_to_provider.dart';
 import 'package:vote_explorer/style/size/datatable_size.dart';
 import 'package:vote_explorer/style/text/datatable_text.dart';
@@ -18,15 +19,6 @@ class BlockDatatable extends ConsumerWidget {
         overflow: TextOverflow.ellipsis, // ...
         style: AppTextStyle.tableTuple,
       ),
-    );
-  }
-
-  void _showDetailDialog(BuildContext context, int blockHeight) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return BlockAlertDialog(blockHeight);
-      },
     );
   }
 
@@ -77,7 +69,13 @@ class BlockDatatable extends ConsumerWidget {
             ];
             return DataRow(
               onSelectChanged: (_) async {
-                _showDetailDialog(context, header.height);
+                ref.read(blockProvider.notifier).fetchBlock(header.height);
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return BlockAlertDialog(header.height);
+                  },
+                );
               },
               cells: List.generate(values.length, (i) {
                 // 블록 높이는 생략 없이 보여주고 나머지만 ellipsis 적용
