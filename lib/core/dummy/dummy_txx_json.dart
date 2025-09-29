@@ -1,4 +1,4 @@
-String dummyTxxIdJSON = '''
+const String dummyTxxJSON = '''
 {
     "success": "true",
     "message": "Operation successful",

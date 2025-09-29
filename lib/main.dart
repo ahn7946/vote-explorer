@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screen/home_screen.dart';
 
 Future<void> main() async {
@@ -17,7 +18,7 @@ Future<void> main() async {
     notoSansLoader.load(),
   ]);
 
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {

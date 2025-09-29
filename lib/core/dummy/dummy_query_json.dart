@@ -1,4 +1,4 @@
-String dummyQueryJSON = '''
+const String dummyQueryJSON = '''
 {
   "success": "true",
   "message": "Operation successful",

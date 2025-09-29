@@ -1,4 +1,4 @@
-String dummyPendingJSON = '''
+const String dummyPendingJSON = '''
 {
     "success": "true",
     "message": "Operation successful",

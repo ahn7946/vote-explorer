@@ -1,4 +1,4 @@
-String dummyFromToJSON = '''{
+const String dummyFromToJSON = '''{
     "success": "true",
     "message": "Operation successful",
     "status": "OK",

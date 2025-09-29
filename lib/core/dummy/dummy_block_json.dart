@@ -1,4 +1,4 @@
-String dummyBlockJSON = '''{
+const String dummyBlockJSON = '''{
     "success": "true",
     "message": "Operation successful",
     "status": "OK",

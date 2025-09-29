@@ -6,7 +6,7 @@ import 'package:vote_explorer/core/model/dto/from_to_response.dart';
 import 'package:vote_explorer/core/model/dto/height_response.dart';
 import 'package:vote_explorer/core/model/dto/pending_response.dart';
 import 'package:vote_explorer/core/model/dto/query_response.dart';
-import 'package:vote_explorer/core/model/dto/txx_id_response.dart';
+import 'package:vote_explorer/core/model/dto/txx_response.dart';
 
 class ApiService {
   static final Dio _dio = Dio(

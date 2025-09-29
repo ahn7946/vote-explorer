@@ -1,4 +1,4 @@
-String dummyHeightJSON = '''
+const String dummyHeightJSON = '''
 {
     "success": "true",
     "message": "Operation successful",
