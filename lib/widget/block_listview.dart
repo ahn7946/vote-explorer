@@ -1,22 +1,20 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/core/api/api_service.dart';
-import 'package:vote_explorer/core/config/config.dart';
-import 'package:vote_explorer/core/model/dto/block_response.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vote_explorer/provider/block_provider.dart';
+import 'package:vote_explorer/provider/height_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_alert_dialog.dart';
+import 'package:vote_explorer/core/config/config.dart';
 
-// tight coupling / prop drilling -> provider 적용 필요
-class BlockListView extends StatefulWidget {
-  final int blockHeight;
-
-  const BlockListView(this.blockHeight, {super.key});
+class BlockListView extends ConsumerStatefulWidget {
+  const BlockListView({super.key});
 
   @override
-  State<BlockListView> createState() => _BlockListViewState();
+  ConsumerState<BlockListView> createState() => _BlockListViewState();
 }
 
-class _BlockListViewState extends State<BlockListView> {
+class _BlockListViewState extends ConsumerState<BlockListView> {
   final ScrollController _scrollController = ScrollController();
   int _visibleCount = AppConfig.fetchSize;
 
@@ -25,58 +23,49 @@ class _BlockListViewState extends State<BlockListView> {
     super.initState();
 
     _scrollController.addListener(() {
+      final blockHeight = ref.read(heightProvider)?.height ?? 0;
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
         setState(() {
-          _visibleCount =
-              min(widget.blockHeight, _visibleCount + AppConfig.fetchSize);
+          _visibleCount = min(blockHeight, _visibleCount + AppConfig.fetchSize);
         });
       }
     });
+
+    // 초기 fetch
+    ref.read(heightProvider.notifier).fetchHeight();
   }
 
   @override
   Widget build(BuildContext context) {
+    final blockHeight = ref.watch(heightProvider)?.height ?? 0;
+
     return SizedBox(
       height: 150,
-      child: Stack(
-        children: [
-          Positioned(
-            top: 85 / 2, // Container 높이 절반 위치
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 2, // 선 두께
-              color: Colors.grey.shade400,
-            ),
-          ),
-          ListView.builder(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            itemCount: _visibleCount + 2, // 투표 중, 제네시스 블록
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return BlockContainer(
-                  "투표중",
-                  color1: Colors.black,
-                  color2: Colors.grey,
-                );
-              }
+      child: ListView.builder(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        itemCount: _visibleCount + 2, // 투표중 + 제네시스
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return BlockContainer(
+              "투표중",
+              color1: Colors.black,
+              color2: Colors.grey,
+            );
+          }
 
-              final blockNumber = widget.blockHeight - (index - 1);
-              if (blockNumber < 0) {
-                return const SizedBox();
-              }
-              return BlockContainer(blockNumber.toString());
-            },
-          ),
-        ],
+          final blockNumber = blockHeight - (index - 1);
+          if (blockNumber < 0) return const SizedBox();
+
+          return BlockContainer(blockNumber.toString());
+        },
       ),
     );
   }
 }
 
-class BlockContainer extends StatefulWidget {
+class BlockContainer extends ConsumerStatefulWidget {
   final String blockIndex;
   final Color? color1;
   final Color? color2;
@@ -84,10 +73,10 @@ class BlockContainer extends StatefulWidget {
   const BlockContainer(this.blockIndex, {this.color1, this.color2, super.key});
 
   @override
-  State<BlockContainer> createState() => _BlockContainerState();
+  ConsumerState<BlockContainer> createState() => _BlockContainerState();
 }
 
-class _BlockContainerState extends State<BlockContainer> {
+class _BlockContainerState extends ConsumerState<BlockContainer> {
   late final double x;
   late final double y;
 
@@ -95,18 +84,12 @@ class _BlockContainerState extends State<BlockContainer> {
   void initState() {
     super.initState();
     final random = Random();
-    // -1.0 ~ 1.0 범위의 double 값 생성
     x = -1 + 2 * random.nextDouble();
     y = -1 + 2 * random.nextDouble();
   }
 
-  void _showDetailDialog(BuildContext context, BlockResponse response) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return BlockAlertDialog(response);
-      },
-    );
+  void _showDetailDialog(BuildContext context, int blockHeight) {
+    showDialog(context: context, builder: (_) => BlockAlertDialog(blockHeight));
   }
 
   @override
@@ -115,15 +98,21 @@ class _BlockContainerState extends State<BlockContainer> {
       mainAxisSize: MainAxisSize.min,
       children: [
         InkResponse(
-          containedInkWell: false, // 영역 제한 해제
+          containedInkWell: false,
           onTap: () async {
-            final response = await ApiService.fetchBlock(widget.blockIndex);
-            _showDetailDialog(context, response);
+            final blockHeight = int.parse(widget.blockIndex);
+
+            await ref.read(blockProvider.notifier).fetchBlock(blockHeight);
+
+            final response = ref.read(blockProvider);
+            if (response != null) {
+              _showDetailDialog(context, blockHeight);
+            }
           },
           child: Container(
             width: 85,
             height: 85,
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               gradient: RadialGradient(
                 radius: 0.9,
@@ -133,7 +122,7 @@ class _BlockContainerState extends State<BlockContainer> {
                 ],
                 center: Alignment(x, y),
               ),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
           ),
         ),

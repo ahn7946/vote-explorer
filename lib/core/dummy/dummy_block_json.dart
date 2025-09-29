@@ -5,6 +5,7 @@ const String dummyBlockJSON = '''{
     "block": {
         "header": {
             "voting_id": "2025 경선",
+            "proposer": "0000000000000000000000000000000000000000000000000000000000000000",
             "merkle_root": "bc255df2c22a867fb3e2b92398aea1055453957f8f8dd0ea9851efa68147668b",
             "height": 406,
             "prev_block_hash": "8e0b5eed1002127a2a65ce37726ced71001c2d8a6a2b7dc588819167cfad3ccf"

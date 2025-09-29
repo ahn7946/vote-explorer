@@ -14,7 +14,7 @@ class BlockNotifier extends Notifier<BlockResponse?> {
   BlockResponse? build() => null;
 
   /// 특정 블록 높이의 블록 상세 조회
-  Future<void> fetchBlock(String height) async {
+  Future<void> fetchBlock(int height) async {
     state = await ApiService.fetchBlock(height);
   }
 }

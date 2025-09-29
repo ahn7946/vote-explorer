@@ -62,7 +62,7 @@ class ApiService {
   /// 특정 블록 높이를 기준으로 블록 상세 정보를 조회한다.
   ///
   /// Returns [BlockResponse] - 블록 상세 정보
-  static Future<BlockResponse> fetchBlock(String blockHeight) async {
+  static Future<BlockResponse> fetchBlock(int blockHeight) async {
     try {
       final response = await _dio.get('/block?height=$blockHeight');
       final result = BlockResponse.fromJson(response.data);

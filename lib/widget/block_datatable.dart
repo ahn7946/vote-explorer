@@ -1,60 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:vote_explorer/core/api/api_service.dart';
-import 'package:vote_explorer/core/model/dto/block_response.dart';
-import 'package:vote_explorer/core/model/dto/from_to_response.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vote_explorer/provider/from_to_provider.dart';
+import 'package:vote_explorer/style/size/datatable_size.dart';
+import 'package:vote_explorer/style/text/datatable_text.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_alert_dialog.dart';
 
-const _columnLabels = [
-  '블록 높이',
-  '블록 도메인',
-  '제안자',
-  '머클 루트',
-  '블록 해시',
-  '이전 블록 해시',
-];
-
-const _widths = [
-  // 각 열 너비 비율 설정 (합 = 1.0)
-  0.1, // 블록 높이
-  0.15, // 블록 도메인
-  0.15, // 제안자
-  0.15, // 머클 루트
-  0.15, // 블록 해시
-  0.15, // 이전 블록 해시
-];
-
-const _columnTooltips = [
-  {
-    "title": "블록 높이란?",
-    "content": "블록체인에서 블록이 생성된 순서를 나타내는 번호입니다.",
-  },
-  {
-    "title": "블록 도메인이란?",
-    "content": "블록(투표)을 가르키기 위한 하나의 별칭이며 블록 해시와 더불어 블록을 구별할 수 있는 하나의 식별자입니다.",
-  },
-  {
-    "title": "제안자란?",
-    "content": "블록(투표)을 생성한 계정의 식별 해시값입니다.",
-  },
-  {
-    "title": "머클 루트란?",
-    "content": "블록(투표) 안 트랜잭션(투표지)들을 한 줄로 정리한 무결성 체크용 해시값 입니다.",
-  },
-  {
-    "title": "블록 해시란?",
-    "content": "블록(투표) 전체 데이터를 해시한 고유 식별자입니다.",
-  },
-  {
-    "title": "이전 블록 해시란?",
-    "content": "해당 블록(투표) 이전의 블록 전체 데이터를 해시한 고유 식별자입니다.",
-  },
-];
-
-class BlockDatatable extends StatelessWidget {
-  final FromToResponse response;
-
-  const BlockDatatable(this.response, {super.key});
+class BlockDatatable extends ConsumerWidget {
+  const BlockDatatable({super.key});
 
   SizedBox _buildEllipsedText(String text, double width) {
     return SizedBox(
@@ -68,28 +21,30 @@ class BlockDatatable extends StatelessWidget {
     );
   }
 
-  void _showDetailDialog(BuildContext context, BlockResponse response) {
+  void _showDetailDialog(BuildContext context, int blockHeight) {
     showDialog(
       context: context,
       builder: (context) {
-        return BlockAlertDialog(response);
+        return BlockAlertDialog(blockHeight);
       },
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fromToResponse = ref.watch(fromToProvider);
+
     return LayoutBuilder(builder: (context, constraints) {
       final double totalWidth = constraints.maxWidth;
       final List<double> columnWidths =
-          _widths.map((ratio) => ratio * totalWidth).toList();
+          widths.map((ratio) => ratio * totalWidth).toList();
 
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
           showCheckboxColumn: false,
           onSelectAll: null,
-          columns: List.generate(_columnLabels.length, (i) {
+          columns: List.generate(columnLabels.length, (i) {
             return DataColumn(
               label:
                   // Text(
@@ -99,19 +54,19 @@ class BlockDatatable extends StatelessWidget {
                   Row(
                 children: [
                   Text(
-                    _columnLabels[i],
+                    columnLabels[i],
                     style: AppTextStyle.tableAttribute,
                   ),
                   const SizedBox(width: 5),
                   ColumnTooltip(
-                    title: _columnTooltips[i]["title"]!,
-                    content: _columnTooltips[i]["content"]!,
+                    title: columnTooltips[i]["title"]!,
+                    content: columnTooltips[i]["content"]!,
                   ),
                 ],
               ),
             );
           }),
-          rows: response.headers.reversed.map((header) {
+          rows: fromToResponse!.headers.reversed.map((header) {
             final values = [
               header.height.toString(),
               header.votingId,
@@ -122,9 +77,7 @@ class BlockDatatable extends StatelessWidget {
             ];
             return DataRow(
               onSelectChanged: (_) async {
-                final response =
-                    await ApiService.fetchBlock(header.height.toString());
-                _showDetailDialog(context, response);
+                _showDetailDialog(context, header.height);
               },
               cells: List.generate(values.length, (i) {
                 // 블록 높이는 생략 없이 보여주고 나머지만 ellipsis 적용
