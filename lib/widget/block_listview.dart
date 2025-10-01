@@ -42,24 +42,37 @@ class _BlockListViewState extends ConsumerState<BlockListView> {
 
     return SizedBox(
       height: 150,
-      child: ListView.builder(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        itemCount: _visibleCount + 2, // 투표중 + 제네시스
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return BlockContainer(
-              "투표중",
-              color1: Colors.black,
-              color2: Colors.grey,
-            );
-          }
+      child: Stack(
+        children: [
+          Positioned(
+            top: 85 / 2, // Container 높이 절반 위치
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 2, // 선 두께
+              color: Colors.grey.shade400,
+            ),
+          ),
+          ListView.builder(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            itemCount: _visibleCount + 2, // 투표중 + 제네시스
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return BlockContainer(
+                  "투표중",
+                  color1: Colors.black,
+                  color2: Colors.grey,
+                );
+              }
 
-          final blockNumber = blockHeight - (index - 1);
-          if (blockNumber < 0) return const SizedBox();
+              final blockNumber = blockHeight - (index - 1);
+              if (blockNumber < 0) return const SizedBox();
 
-          return BlockContainer(blockNumber.toString());
-        },
+              return BlockContainer(blockNumber.toString());
+            },
+          ),
+        ],
       ),
     );
   }
