@@ -8,15 +8,9 @@ class AppConfig {
       return '/explorer';
     } else {
       // 개발 환경: 백엔드 서버 직접 접근
-      return 'http://l4.ai-capstone.store:8081/explorer';
+      return '$homeURL/explorer';
     }
   }
 
-  static String get homeURL {
-    if (isProduction) {
-      return 'https://voting.jw-capstone.store/';
-    } else {
-      return 'http://l1.ai-capstone.store:8081/';
-    }
-  }
+  static String homeURL = 'https://voting.jw-capstone.store/';
 }
