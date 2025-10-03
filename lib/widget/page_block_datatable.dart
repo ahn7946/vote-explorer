@@ -99,19 +99,15 @@ class PageBlockDatatable extends ConsumerWidget {
                         header.prevBlockHash,
                       ];
                       return DataRow(
-                        onSelectChanged: (_) async {
-                          ref
-                              .read(blockProvider.notifier)
-                              .fetchBlock(header.height);
+                        onSelectChanged: (_) {
+                          // 클릭 즉시 다이얼로그 띄움
                           showDialog(
                             context: context,
-                            builder: (context) {
-                              return BlockAlertDialog(header.height);
-                            },
+                            builder: (context) =>
+                                BlockAlertDialog(header.height),
                           );
                         },
                         cells: List.generate(values.length, (i) {
-                          // 첫 번째(height)는 full, 나머지는 ellipsis
                           final textWidget = (i == 0)
                               ? Text(values[i], style: AppTextStyle.tableTuple)
                               : _buildEllipsedText(values[i], columnWidths[i]);

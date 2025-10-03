@@ -112,15 +112,12 @@ class _BlockContainerState extends ConsumerState<BlockContainer> {
       children: [
         InkResponse(
           containedInkWell: false,
-          onTap: () async {
+          onTap: () {
             final blockHeight = int.parse(widget.blockIndex);
-
-            await ref.read(blockProvider.notifier).fetchBlock(blockHeight);
-
-            final response = ref.read(blockProvider);
-            if (response != null) {
-              _showDetailDialog(context, blockHeight);
-            }
+            showDialog(
+              context: context,
+              builder: (_) => BlockAlertDialog(blockHeight),
+            );
           },
           child: Container(
             width: 85,
