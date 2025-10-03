@@ -173,12 +173,13 @@ class ColumnTooltip extends StatelessWidget {
   }
 }
 
-// ---------------------- 상수 설정 ----------------------
-const int kPaginationVisibleCount = 7; // 화면에 표시할 페이지 버튼 수
-
-// ---------------------- 페이지네이션 버튼 ----------------------
 class _PaginationControls extends ConsumerWidget {
   const _PaginationControls({super.key});
+
+  static const double _buttonWidth = 48; // 버튼 최소 폭
+  static const double _buttonMargin = 8; // 버튼 좌우 마진 합
+  static const int _minButtons = 3;
+  static const int _maxButtons = 9;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -186,17 +187,25 @@ class _PaginationControls extends ConsumerWidget {
     final heightResponse = ref.watch(heightProvider);
     final height = heightResponse?.height ?? 0;
 
-    // 전체 페이지 수 계산
     final totalPages = (height / fetchSize).ceil();
-    if (totalPages == 0) return const SizedBox(); // 데이터 없을 때 버튼 숨김
+    if (totalPages == 0) return const SizedBox();
 
-    // 가운데 기준으로 보여줄 페이지 범위 계산
-    final half = kPaginationVisibleCount ~/ 2;
+    // 화면 기준으로 최대 버튼 수 계산
+    final screenWidth = MediaQuery.of(context).size.width;
+    int visibleCount = (screenWidth / (_buttonWidth + _buttonMargin)).floor();
+
+    // 홀수, 최소/최대 보정
+    visibleCount = visibleCount.isEven ? visibleCount - 1 : visibleCount;
+    visibleCount = visibleCount.clamp(_minButtons, _maxButtons);
+    visibleCount = visibleCount > totalPages ? totalPages : visibleCount;
+
+    // 가운데 기준 페이지 범위 계산
+    final half = visibleCount ~/ 2;
     int start = currentPage - half;
     int end = currentPage + half;
 
     if (start < 1) {
-      end += 1 - start; // 범위 보정
+      end += 1 - start;
       start = 1;
     }
     if (end > totalPages) {
@@ -210,23 +219,16 @@ class _PaginationControls extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // << 버튼
         IconButton(
           icon: const Icon(Icons.chevron_left),
           onPressed: currentPage > 1
-              ? () {
-                  ref.read(currentPageProvider.notifier).state =
-                      currentPage - 1;
-                }
+              ? () =>
+                  ref.read(currentPageProvider.notifier).state = currentPage - 1
               : null,
         ),
-
-        // 숫자 버튼
         for (final page in pages)
           GestureDetector(
-            onTap: () {
-              ref.read(currentPageProvider.notifier).state = page;
-            },
+            onTap: () => ref.read(currentPageProvider.notifier).state = page,
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 4),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -245,15 +247,11 @@ class _PaginationControls extends ConsumerWidget {
               ),
             ),
           ),
-
-        // >> 버튼
         IconButton(
           icon: const Icon(Icons.chevron_right),
           onPressed: currentPage < totalPages
-              ? () {
-                  ref.read(currentPageProvider.notifier).state =
-                      currentPage + 1;
-                }
+              ? () =>
+                  ref.read(currentPageProvider.notifier).state = currentPage + 1
               : null,
         ),
       ],
