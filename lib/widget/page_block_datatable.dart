@@ -173,6 +173,9 @@ class ColumnTooltip extends StatelessWidget {
   }
 }
 
+// ---------------------- 상수 설정 ----------------------
+const int kPaginationVisibleCount = 7; // 화면에 표시할 페이지 버튼 수
+
 // ---------------------- 페이지네이션 버튼 ----------------------
 class _PaginationControls extends ConsumerWidget {
   const _PaginationControls({super.key});
@@ -181,18 +184,28 @@ class _PaginationControls extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentPage = ref.watch(currentPageProvider);
     final heightResponse = ref.watch(heightProvider);
-
     final height = heightResponse?.height ?? 0;
 
     // 전체 페이지 수 계산
     final totalPages = (height / fetchSize).ceil();
     if (totalPages == 0) return const SizedBox(); // 데이터 없을 때 버튼 숨김
 
-    // 현재 페이지 기준 앞뒤 2개
-    final start = (currentPage <= 3) ? 1 : currentPage - 2;
-    final pages = List.generate(5, (i) => start + i)
-        .where((page) => page <= totalPages)
-        .toList();
+    // 가운데 기준으로 보여줄 페이지 범위 계산
+    final half = kPaginationVisibleCount ~/ 2;
+    int start = currentPage - half;
+    int end = currentPage + half;
+
+    if (start < 1) {
+      end += 1 - start; // 범위 보정
+      start = 1;
+    }
+    if (end > totalPages) {
+      start -= end - totalPages;
+      end = totalPages;
+    }
+    if (start < 1) start = 1;
+
+    final pages = [for (int i = start; i <= end; i++) i];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
