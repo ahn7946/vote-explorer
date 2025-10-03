@@ -9,7 +9,7 @@ import 'package:vote_explorer/provider/height_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_datatable.dart';
 import 'package:vote_explorer/widget/block_listview.dart';
-import 'package:vote_explorer/widget/block_paginated_datatable.dart';
+import 'package:vote_explorer/widget/page_block_datatable.dart';
 import 'package:vote_explorer/widget/voting_appbar.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -20,22 +20,6 @@ class HomeScreen extends ConsumerWidget {
     final width = MediaQuery.of(context).size.width;
     double horizontalPadding =
         kIsWeb ? (width > 1000 ? (width - 1000) / 4 : 0) : 0;
-
-    final HeightResponse? blockHeightResponse = ref.watch(heightProvider);
-    final FromToResponse? fromToResponse = ref.watch(fromToProvider);
-
-    // 초기 fetch 트리거
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (blockHeightResponse == null) {
-    //     ref.read(heightProvider.notifier).fetchHeight();
-    //   }
-    //   if (fromToResponse == null && blockHeightResponse != null) {
-    //     ref.read(fromToProvider.notifier).fetchFromTo(
-    //           blockHeightResponse.height - AppConfig.fetchSize,
-    //           blockHeightResponse.height,
-    //         );
-    //   }
-    // });
 
     return Scaffold(
       appBar: const VotingAppBar(),
@@ -53,19 +37,8 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ),
-
           BlockListView(),
-          // BlockDatatable(),
           PageBlockDatatable(),
-          // BlockPaginatedTable(),
-          // if (blockHeightResponse == null || fromToResponse == null)
-          //   const Center(child: CircularProgressIndicator())
-          // else ...[
-          //   BlockListView(),
-          //   BlockDatatable(),
-          // PageBlockDatatable(),
-          // BlockPaginatedTable(),
-          // ],
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:vote_explorer/core/config/config.dart';
 import 'package:vote_explorer/core/model/dto/from_to_response.dart';
 import 'package:vote_explorer/provider/block_provider.dart';
 import 'package:vote_explorer/provider/height_provider.dart';
+import 'package:vote_explorer/style/size/datatable_size.dart'; // ✅ 비율(widths) 가져오기
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_alert_dialog.dart';
 
@@ -62,56 +63,65 @@ class PageBlockDatatable extends ConsumerWidget {
         // 테이블 영역
         fromToResponse.when(
           data: (data) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                showCheckboxColumn: false,
-                onSelectAll: null,
-                columns: List.generate(columnLabels.length, (i) {
-                  return DataColumn(
-                    label: Row(
-                      children: [
-                        Text(columnLabels[i],
-                            style: AppTextStyle.tableAttribute),
-                        const SizedBox(width: 5),
-                        ColumnTooltip(
-                          title: columnTooltips[i]["title"]!,
-                          content: columnTooltips[i]["content"]!,
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final double totalWidth = constraints.maxWidth;
+                final List<double> columnWidths =
+                    widths.map((ratio) => ratio * totalWidth).toList();
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    showCheckboxColumn: false,
+                    onSelectAll: null,
+                    columns: List.generate(columnLabels.length, (i) {
+                      return DataColumn(
+                        label: Row(
+                          children: [
+                            Text(columnLabels[i],
+                                style: AppTextStyle.tableAttribute),
+                            const SizedBox(width: 5),
+                            ColumnTooltip(
+                              title: columnTooltips[i]["title"]!,
+                              content: columnTooltips[i]["content"]!,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                }),
-                rows: data.headers.reversed.map((header) {
-                  final values = [
-                    header.height.toString(),
-                    header.votingId,
-                    header.proposer,
-                    header.merkleRoot,
-                    header.blockHash,
-                    header.prevBlockHash,
-                  ];
-                  return DataRow(
-                    onSelectChanged: (_) async {
-                      ref
-                          .read(blockProvider.notifier)
-                          .fetchBlock(header.height);
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return BlockAlertDialog(header.height);
-                        },
                       );
-                    },
-                    cells: List.generate(values.length, (i) {
-                      final textWidget = (i == 0)
-                          ? Text(values[i], style: AppTextStyle.tableTuple)
-                          : _buildEllipsedText(values[i], 150);
-                      return DataCell(textWidget);
                     }),
-                  );
-                }).toList(),
-              ),
+                    rows: data.headers.reversed.map((header) {
+                      final values = [
+                        header.height.toString(),
+                        header.votingId,
+                        header.proposer,
+                        header.merkleRoot,
+                        header.blockHash,
+                        header.prevBlockHash,
+                      ];
+                      return DataRow(
+                        onSelectChanged: (_) async {
+                          ref
+                              .read(blockProvider.notifier)
+                              .fetchBlock(header.height);
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return BlockAlertDialog(header.height);
+                            },
+                          );
+                        },
+                        cells: List.generate(values.length, (i) {
+                          // 첫 번째(height)는 full, 나머지는 ellipsis
+                          final textWidget = (i == 0)
+                              ? Text(values[i], style: AppTextStyle.tableTuple)
+                              : _buildEllipsedText(values[i], columnWidths[i]);
+                          return DataCell(textWidget);
+                        }),
+                      );
+                    }).toList(),
+                  ),
+                );
+              },
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
