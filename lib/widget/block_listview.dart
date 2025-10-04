@@ -56,19 +56,10 @@ class _BlockListViewState extends ConsumerState<BlockListView> {
           ListView.builder(
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
-            itemCount: _visibleCount + 2, // 투표중 + 제네시스
+            itemCount: _visibleCount + 1, // 투표중 + 제네시스
             itemBuilder: (context, index) {
-              if (index == 0) {
-                return BlockContainer(
-                  "투표중",
-                  color1: Colors.black,
-                  color2: Colors.grey,
-                );
-              }
-
-              final blockNumber = blockHeight - (index - 1);
+              final blockNumber = blockHeight - (index);
               if (blockNumber < 0) return const SizedBox();
-
               return BlockContainer(blockNumber.toString());
             },
           ),
