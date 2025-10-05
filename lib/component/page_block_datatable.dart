@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vote_explorer/component/block_alert_dialog.dart';
 import 'package:vote_explorer/component/widget/button.dart';
+import 'package:vote_explorer/component/widget/text.dart';
 import 'package:vote_explorer/core/api/api_service.dart';
 import 'package:vote_explorer/core/config/config.dart';
 import 'package:vote_explorer/core/model/dto/from_to_response.dart';
@@ -37,18 +38,6 @@ final paginatedFromToProvider =
 // ---------------------- BlockDatatable ----------------------
 class PageBlockDatatable extends ConsumerWidget {
   const PageBlockDatatable({super.key});
-
-  SizedBox _buildEllipsedText(String text, double width) {
-    return SizedBox(
-      width: width,
-      child: Text(
-        text,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: AppTextStyle.tableTuple,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -115,7 +104,7 @@ class PageBlockDatatable extends ConsumerWidget {
                                   child: (i == 0)
                                       ? Text(text,
                                           style: AppTextStyle.tableTuple)
-                                      : _buildEllipsedText(
+                                      : buildEllipsedText(
                                           text, columnWidths[i]),
                                 ),
                                 buildCopyIconButton(context, text),

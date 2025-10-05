@@ -1,10 +1,14 @@
+// TODO: 컬렉션 기반 리팩토링, 너비 조정, Expanded 적용?
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:vote_explorer/component/widget/button.dart';
 import 'package:vote_explorer/provider/block_provider.dart';
 
 class BlockAlertDialog extends ConsumerStatefulWidget {
   final int blockHeight;
+
   const BlockAlertDialog(this.blockHeight, {super.key});
 
   @override
@@ -99,12 +103,34 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                               DataColumn(label: Text("투표 시간 (KST)")),
                             ],
                             rows: blockResponse.block.transactions.map((tx) {
+                              String time =
+                                  formatTimestamp(tx.timeStamp.toString());
+
                               return DataRow(
                                 cells: [
-                                  DataCell(Text(tx.hash)),
-                                  DataCell(Text(tx.option)),
-                                  DataCell(Text(formatTimestamp(
-                                      tx.timeStamp.toString()))),
+                                  // TODO: 컬렉션 기반 리팩토링, 너비 조정, Expanded 적용?
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        Text(tx.hash),
+                                        buildCopyIconButton(context, tx.hash)
+                                      ],
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        Text(tx.option),
+                                        buildCopyIconButton(context, tx.hash)
+                                      ],
+                                    ),
+                                  ),
+                                  DataCell(Row(
+                                    children: [
+                                      Text(time),
+                                      buildCopyIconButton(context, time),
+                                    ],
+                                  )),
                                 ],
                               );
                             }).toList(),

@@ -1,6 +1,9 @@
+// TODO: 컬렉션 기반 리팩토링, 너비 조정, Expanded 적용?
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vote_explorer/component/block_alert_dialog.dart';
+import 'package:vote_explorer/component/widget/button.dart';
 import 'package:vote_explorer/core/model/dto/query_response.dart';
 import 'package:vote_explorer/provider/query_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
@@ -68,16 +71,50 @@ class QueryAlertDialog extends ConsumerWidget {
                               );
                             },
                             cells: [
-                              DataCell(buildEllipsedText(
-                                  header.height.toString(), 120)),
-                              DataCell(buildEllipsedText(header.votingId, 120)),
-                              DataCell(buildEllipsedText(header.proposer, 120)),
-                              DataCell(
-                                  buildEllipsedText(header.merkleRoot, 120)),
-                              DataCell(
-                                  buildEllipsedText(header.blockHash, 120)),
-                              DataCell(
-                                  buildEllipsedText(header.prevBlockHash, 120)),
+                              // TODO: 컬렉션 기반 리팩토링, 너비 조정, Expanded 적용?
+                              DataCell(Row(
+                                children: [
+                                  buildEllipsedText(
+                                      header.height.toString(), 120),
+                                  buildCopyIconButton(
+                                      context, header.height.toString())
+                                ],
+                              )),
+                              DataCell(Row(
+                                children: [
+                                  buildEllipsedText(header.votingId, 120),
+                                  buildCopyIconButton(
+                                      context, header.votingId.toString())
+                                ],
+                              )),
+                              DataCell(Row(
+                                children: [
+                                  buildEllipsedText(header.proposer, 120),
+                                  buildCopyIconButton(
+                                      context, header.proposer.toString())
+                                ],
+                              )),
+                              DataCell(Row(
+                                children: [
+                                  buildEllipsedText(header.merkleRoot, 120),
+                                  buildCopyIconButton(
+                                      context, header.merkleRoot.toString())
+                                ],
+                              )),
+                              DataCell(Row(
+                                children: [
+                                  buildEllipsedText(header.blockHash, 120),
+                                  buildCopyIconButton(
+                                      context, header.blockHash.toString())
+                                ],
+                              )),
+                              DataCell(Row(
+                                children: [
+                                  buildEllipsedText(header.prevBlockHash, 120),
+                                  buildCopyIconButton(
+                                      context, header.prevBlockHash.toString())
+                                ],
+                              )),
                             ],
                           );
                         },
