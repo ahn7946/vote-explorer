@@ -1,11 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vote_explorer/provider/block_provider.dart';
 import 'package:vote_explorer/provider/height_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
 import 'package:vote_explorer/widget/block_alert_dialog.dart';
 import 'package:vote_explorer/core/config/config.dart';
+
+const double _kBlockSize = 79.0;
+const double _kBlockMargin = 18.0;
 
 class BlockListView extends ConsumerStatefulWidget {
   const BlockListView({super.key});
@@ -45,7 +47,7 @@ class _BlockListViewState extends ConsumerState<BlockListView> {
       child: Stack(
         children: [
           Positioned(
-            top: 85 / 2, // Container 높이 절반 위치
+            top: _kBlockSize / 2,
             left: 0,
             right: 0,
             child: Container(
@@ -92,10 +94,6 @@ class _BlockContainerState extends ConsumerState<BlockContainer> {
     y = -1 + 2 * random.nextDouble();
   }
 
-  void _showDetailDialog(BuildContext context, int blockHeight) {
-    showDialog(context: context, builder: (_) => BlockAlertDialog(blockHeight));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -111,9 +109,9 @@ class _BlockContainerState extends ConsumerState<BlockContainer> {
             );
           },
           child: Container(
-            width: 85,
-            height: 85,
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            width: _kBlockSize,
+            height: _kBlockSize,
+            margin: const EdgeInsets.symmetric(horizontal: _kBlockMargin),
             decoration: BoxDecoration(
               gradient: RadialGradient(
                 radius: 0.9,
