@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:vote_explorer/provider/block_provider.dart';
 
 class BlockAlertDialog extends ConsumerStatefulWidget {
@@ -11,6 +12,28 @@ class BlockAlertDialog extends ConsumerStatefulWidget {
 }
 
 class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
+  String formatTimestamp(dynamic timestamp) {
+    if (timestamp == null) return "-";
+
+    final ts = int.tryParse(timestamp.toString());
+    if (ts == null) return timestamp.toString();
+
+    // 초 단위 + 나노초 분리
+    final seconds = ts ~/ 1000000000;
+    final nanoseconds = ts % 1000000000;
+
+    // UTC 기준 → 한국시간(KST, UTC+9)
+    final date =
+        DateTime.fromMillisecondsSinceEpoch(seconds * 1000, isUtc: true)
+            .add(const Duration(hours: 9));
+
+    // 보기 좋은 형식: "2025-07-14 09:08:05.889704400"
+    final formatted =
+        "${DateFormat('yyyy-MM-dd HH:mm:ss').format(date)}.${nanoseconds.toString().padLeft(9, '0')}";
+
+    return formatted;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -73,14 +96,15 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                             columns: const [
                               DataColumn(label: Text("투표 해시")),
                               DataColumn(label: Text("투표 선택지")),
-                              DataColumn(label: Text("투표 시간")),
+                              DataColumn(label: Text("투표 시간 (KST)")),
                             ],
                             rows: blockResponse.block.transactions.map((tx) {
                               return DataRow(
                                 cells: [
                                   DataCell(Text(tx.hash)),
                                   DataCell(Text(tx.option)),
-                                  DataCell(Text(tx.timeStamp.toString())),
+                                  DataCell(Text(formatTimestamp(
+                                      tx.timeStamp.toString()))),
                                 ],
                               );
                             }).toList(),
