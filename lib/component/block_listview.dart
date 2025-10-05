@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vote_explorer/provider/height_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
-import 'package:vote_explorer/widget/block_alert_dialog.dart';
+import 'package:vote_explorer/component/block_alert_dialog.dart';
 import 'package:vote_explorer/core/config/config.dart';
 
 const double _kBlockSize = 79.0;

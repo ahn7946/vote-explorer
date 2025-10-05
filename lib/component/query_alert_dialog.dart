@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vote_explorer/component/block_alert_dialog.dart';
 import 'package:vote_explorer/core/model/dto/query_response.dart';
 import 'package:vote_explorer/provider/query_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
-import 'package:vote_explorer/widget/block_alert_dialog.dart';
 
 class QueryAlertDialog extends ConsumerWidget {
   final String query;

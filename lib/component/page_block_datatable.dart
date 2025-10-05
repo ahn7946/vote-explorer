@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vote_explorer/component/block_alert_dialog.dart';
+import 'package:vote_explorer/component/widget/button.dart';
+import 'package:vote_explorer/core/api/api_service.dart';
 import 'package:vote_explorer/core/config/config.dart';
 import 'package:vote_explorer/core/model/dto/from_to_response.dart';
-import 'package:vote_explorer/provider/block_provider.dart';
 import 'package:vote_explorer/provider/height_provider.dart';
-import 'package:vote_explorer/style/size/datatable_size.dart'; // ✅ 비율(widths) 가져오기
+import 'package:vote_explorer/style/size/datatable_size.dart';
+import 'package:vote_explorer/style/text/datatable_text.dart';
 import 'package:vote_explorer/style/text_style.dart';
-import 'package:vote_explorer/widget/block_alert_dialog.dart';
-
-import '../core/api/api_service.dart';
-import '../style/text/datatable_text.dart';
 
 // ---------------------- 페이지네이션 설정 ----------------------
 const int fetchSize = AppConfig.fetchSize;
@@ -108,10 +107,21 @@ class PageBlockDatatable extends ConsumerWidget {
                           );
                         },
                         cells: List.generate(values.length, (i) {
-                          final textWidget = (i == 0)
-                              ? Text(values[i], style: AppTextStyle.tableTuple)
-                              : _buildEllipsedText(values[i], columnWidths[i]);
-                          return DataCell(textWidget);
+                          final text = values[i];
+                          return DataCell(
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: (i == 0)
+                                      ? Text(text,
+                                          style: AppTextStyle.tableTuple)
+                                      : _buildEllipsedText(
+                                          text, columnWidths[i]),
+                                ),
+                                buildCopyIconButton(context, text),
+                              ],
+                            ),
+                          );
                         }),
                       );
                     }).toList(),

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vote_explorer/core/config/config.dart';
+import 'package:vote_explorer/component//query_alert_dialog.dart';
 import 'package:vote_explorer/provider/query_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
-import 'package:vote_explorer/widget/query_alert_dialog.dart';
 
 class VotingAppBar extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
