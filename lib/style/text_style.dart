@@ -12,9 +12,19 @@ class AppTextStyle {
     fontSize: 16,
   );
 
-  static const voting = TextStyle(
+  static const veriVote = TextStyle(
     fontSize: 22.4,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w400,
+  );
+
+  static const goVeriVote = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const explorer = TextStyle(
+    fontSize: 22.4,
+    fontWeight: FontWeight.w900,
   );
 
   static const searchBar = TextStyle(

@@ -1,5 +1,5 @@
 name: vote_explorer
-description: "A new Flutter project."
+description: "VeriVote Explorer"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -24,6 +24,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
 
   fonts:
     - family: JetBrainsMono

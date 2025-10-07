@@ -7,18 +7,18 @@ import 'package:vote_explorer/component//query_alert_dialog.dart';
 import 'package:vote_explorer/provider/query_provider.dart';
 import 'package:vote_explorer/style/text_style.dart';
 
-class VotingAppBar extends ConsumerStatefulWidget
+class VeriVoteAppBar extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
-  const VotingAppBar({super.key});
+  const VeriVoteAppBar({super.key});
 
   @override
-  ConsumerState<VotingAppBar> createState() => _VotingAppBarState();
+  ConsumerState<VeriVoteAppBar> createState() => _VotingAppBarState();
 
   @override
   Size get preferredSize => const Size.fromHeight(80);
 }
 
-class _VotingAppBarState extends ConsumerState<VotingAppBar> {
+class _VotingAppBarState extends ConsumerState<VeriVoteAppBar> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode(); // Web 포커스 안전 처리
 
@@ -38,7 +38,7 @@ class _VotingAppBarState extends ConsumerState<VotingAppBar> {
 
     // 검색 후 입력 초기화
     _searchController.clear();
-    Future.delayed(Duration(milliseconds: 50), () {
+    Future.delayed(const Duration(milliseconds: 50), () {
       _focusNode.unfocus();
     });
 
@@ -52,12 +52,13 @@ class _VotingAppBarState extends ConsumerState<VotingAppBar> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    const threshold = 650;
+    const threshold = 720;
+
     final double horizontalPadding =
         (width > threshold && kIsWeb) ? (width / threshold) * 16 : 16;
-    final showSpacer = width > threshold && kIsWeb;
-    final hideVotingText =
-        _searchController.text.isNotEmpty && !(width > threshold && kIsWeb);
+
+    // 화면 넓이 기준으로 반응형 처리
+    final isWide = width > threshold && kIsWeb;
 
     return Container(
       height: widget.preferredSize.height,
@@ -66,18 +67,25 @@ class _VotingAppBarState extends ConsumerState<VotingAppBar> {
           border: Border(bottom: BorderSide(color: Colors.black26))),
       child: Row(
         children: [
-          if (!hideVotingText)
-            GestureDetector(
-              onTap: () => launchUrl(Uri.parse(AppConfig.homeURL)),
-              child: Text(
-                "✓OTING",
-                style: AppTextStyle.voting,
-              ),
+          // 로고 + 제목
+          Image.asset(
+            'assets/logo.png',
+            width: 40,
+            height: 40,
+          ),
+          const SizedBox(width: 5),
+          if (isWide)
+            Text(
+              "VeriVote ",
+              style: AppTextStyle.veriVote,
             ),
-          if (showSpacer)
-            const Spacer()
-          else
-            SizedBox(width: horizontalPadding),
+          Text(
+            "Explorer",
+            style: AppTextStyle.explorer,
+          ),
+
+          isWide ? Spacer() : SizedBox(width: 15),
+
           Flexible(
             flex: 4,
             child: Align(
@@ -117,7 +125,16 @@ class _VotingAppBarState extends ConsumerState<VotingAppBar> {
               ),
             ),
           ),
-          if (showSpacer) const Spacer() else SizedBox(width: horizontalPadding)
+          if (isWide) ...[
+            const Spacer(),
+            GestureDetector(
+              onTap: () => launchUrl(Uri.parse(AppConfig.loginURL)),
+              child: Text(
+                "👉  투표하러가기  👈",
+                style: AppTextStyle.goVeriVote,
+              ),
+            ),
+          ],
         ],
       ),
     );

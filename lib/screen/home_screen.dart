@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vote_explorer/component/block_listview.dart';
 import 'package:vote_explorer/component/page_block_datatable.dart';
-import 'package:vote_explorer/component/voting_appbar.dart';
+import 'package:vote_explorer/component/verivote_appbar.dart';
 import 'package:vote_explorer/style/text_style.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -16,7 +16,7 @@ class HomeScreen extends ConsumerWidget {
         kIsWeb ? (width > 1000 ? (width - 1000) / 5 : 0) : 0;
 
     return Scaffold(
-      appBar: const VotingAppBar(),
+      appBar: const VeriVoteAppBar(),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Column(
