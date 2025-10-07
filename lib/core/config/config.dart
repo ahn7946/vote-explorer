@@ -13,5 +13,4 @@ class AppConfig {
   }
 
   static String homeURL = 'https://voting.jw-capstone.store/';
-  static String loginURL = 'https://voting.jw-capstone.store/login';
 }

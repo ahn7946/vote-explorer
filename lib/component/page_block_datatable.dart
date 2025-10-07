@@ -162,7 +162,7 @@ class ColumnTooltip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(8),
-      waitDuration: const Duration(milliseconds: 300),
+      waitDuration: const Duration(milliseconds: 200),
       child: const Icon(
         Icons.info_outline,
         size: 18,

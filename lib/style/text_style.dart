@@ -60,7 +60,7 @@ class AppTextStyle {
   );
 
   static const tooltipContent = TextStyle(
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: FontWeight.w400,
   );
 }

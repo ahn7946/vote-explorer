@@ -127,11 +127,23 @@ class _VotingAppBarState extends ConsumerState<VeriVoteAppBar> {
           ),
           if (isWide) ...[
             const Spacer(),
-            GestureDetector(
-              onTap: () => launchUrl(Uri.parse(AppConfig.loginURL)),
-              child: Text(
-                "👉  투표하러가기  👈",
-                style: AppTextStyle.goVeriVote,
+            Tooltip(
+              richMessage: TextSpan(
+                text: AppConfig.homeURL,
+                style: AppTextStyle.tooltipContent,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.all(8),
+              waitDuration: const Duration(milliseconds: 200),
+              child: GestureDetector(
+                onTap: () => launchUrl(Uri.parse(AppConfig.homeURL)),
+                child: Text(
+                  "👉  투표하러가기  👈",
+                  style: AppTextStyle.goVeriVote,
+                ),
               ),
             ),
           ],
