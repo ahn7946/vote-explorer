@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
-      // title: 'Flutter Demo',
+      title: 'VeriVote Explorer',
       theme: ThemeData(
         textTheme: const TextTheme(
           titleMedium: TextStyle(fontSize: 20),
