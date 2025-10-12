@@ -110,7 +110,7 @@ class _VotingAppBarState extends ConsumerState<VeriVoteAppBar> {
                     onSubmitted: _handleSearch,
                     style: AppTextStyle.searchBar,
                     decoration: InputDecoration(
-                      hintText: "투표명 / 블록해시로 조회",
+                      hintText: "블록 정보를 입력해주세요",
                       hintStyle: AppTextStyle.searchBarHint,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.search),

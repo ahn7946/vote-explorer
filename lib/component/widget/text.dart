@@ -7,7 +7,8 @@ SizedBox buildEllipsedText(String text, double width) {
     child: Text(
       text,
       maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+      overflow: TextOverflow.fade,
+      softWrap: false,
       style: AppTextStyle.tableTuple,
     ),
   );

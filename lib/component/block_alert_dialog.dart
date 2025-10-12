@@ -51,16 +51,41 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
   Widget build(BuildContext context) {
     final blockResponse = ref.watch(blockProvider);
 
-    Widget buildRow(String label, String value) {
+    /// ✅ 라벨 길이 통일 + 복사 버튼 추가한 공용 위젯
+    Widget buildRow(String label, String value, double maxRowWidth) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("$label: ",
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            Expanded(child: Text(value, softWrap: true)),
-          ],
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxRowWidth),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 130, // 라벨 고정
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19,
+                  ),
+                ),
+              ),
+              const Text(": "),
+              Expanded(
+                child: Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
+                  style: const TextStyle(
+                    fontSize: 19,
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              buildCopyIconButton(context, value),
+            ],
+          ),
         ),
       );
     }
@@ -74,7 +99,10 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text("블록 상세 (height: ${widget.blockHeight})"),
+          title: Text(
+            "블록 조회 (블록 높이: ${widget.blockHeight})",
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+          ),
           content: SizedBox(
             width: maxWidth,
             height: maxHeight, // fetch 전후 동일
@@ -84,13 +112,16 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildRow("블록 도메인", blockResponse.block.header.votingId),
-                        buildRow("제안자", blockResponse.block.header.proposer),
+                        buildRow("블록 도메인", blockResponse.block.header.votingId,
+                            maxWidth),
+                        buildRow("제안자", blockResponse.block.header.proposer,
+                            maxWidth),
+                        buildRow("머클 루트", blockResponse.block.header.merkleRoot,
+                            maxWidth),
                         buildRow(
-                            "머클 루트", blockResponse.block.header.merkleRoot),
-                        buildRow("블록 해시", blockResponse.block.blockHash),
+                            "블록 해시", blockResponse.block.blockHash, maxWidth),
                         buildRow("이전 블록 해시",
-                            blockResponse.block.header.prevBlockHash),
+                            blockResponse.block.header.prevBlockHash, maxWidth),
                         const SizedBox(height: 30),
                         const Text("트랜잭션",
                             style: TextStyle(fontWeight: FontWeight.bold)),

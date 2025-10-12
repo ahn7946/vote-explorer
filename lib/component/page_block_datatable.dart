@@ -107,6 +107,7 @@ class PageBlockDatatable extends ConsumerWidget {
                                       : buildEllipsedText(
                                           text, columnWidths[i]),
                                 ),
+                                SizedBox(width: 10),
                                 buildCopyIconButton(context, text),
                               ],
                             ),
