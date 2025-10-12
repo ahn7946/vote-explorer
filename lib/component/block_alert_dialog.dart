@@ -59,10 +59,10 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxRowWidth),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 130, // 라벨 고정
+                width: 130,
                 child: Text(
                   label,
                   style: const TextStyle(
@@ -72,19 +72,32 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                 ),
               ),
               const Text(":  "),
-              Expanded(
-                child: Text(
-                  value,
-                  maxLines: 1,
-                  overflow: TextOverflow.fade,
-                  softWrap: false,
-                  style: const TextStyle(
-                    fontSize: 19,
-                  ),
+              // 텍스트 + 버튼 묶음
+              Flexible(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min, // 최소 공간만 사용
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: constraints.maxWidth - 30, // 버튼 공간 확보
+                          ),
+                          child: Text(
+                            value,
+                            maxLines: 1,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            style: const TextStyle(fontSize: 19),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        buildCopyIconButton(context, value),
+                      ],
+                    );
+                  },
                 ),
               ),
-              SizedBox(width: 10),
-              buildCopyIconButton(context, value),
             ],
           ),
         ),
