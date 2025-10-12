@@ -233,14 +233,15 @@ class _PaginationControls extends ConsumerWidget {
               margin: const EdgeInsets.symmetric(horizontal: 4),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: page == currentPage ? Colors.blue : Colors.white,
-                borderRadius: BorderRadius.circular(4),
+                color: page == currentPage ? Colors.black87 : Colors.white,
+                borderRadius: BorderRadius.circular(3),
                 border: Border.all(color: Colors.grey),
               ),
               child: Text(
                 "$page",
                 style: TextStyle(
                   color: page == currentPage ? Colors.white : Colors.black,
+                  fontSize: 15,
                   fontWeight:
                       page == currentPage ? FontWeight.bold : FontWeight.normal,
                 ),
