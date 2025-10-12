@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:vote_explorer/component/widget/button.dart';
 import 'package:vote_explorer/provider/block_provider.dart';
+import 'package:vote_explorer/style/text_style.dart';
 
 class BlockAlertDialog extends ConsumerStatefulWidget {
   final int blockHeight;
@@ -70,7 +71,7 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                   ),
                 ),
               ),
-              const Text(": "),
+              const Text(":  "),
               Expanded(
                 child: Text(
                   value,
@@ -93,14 +94,14 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
     return LayoutBuilder(
       builder: (context, constraints) {
         // 화면 비율 기반 최대/최소 크기
-        final maxWidth = constraints.maxWidth * 0.6;
-        final maxHeight = constraints.maxHeight * 0.5;
+        final double maxWidth = constraints.maxWidth * 0.8;
+        final double maxHeight = constraints.maxHeight * 0.6;
 
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Text(
-            "블록 조회 (블록 높이: ${widget.blockHeight})",
+            "🔍 블록 조회 (블록 높이: ${widget.blockHeight})",
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           content: SizedBox(
@@ -129,9 +130,16 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             columns: const [
-                              DataColumn(label: Text("투표 해시")),
-                              DataColumn(label: Text("투표 선택지")),
-                              DataColumn(label: Text("투표 시간 (KST)")),
+                              DataColumn(
+                                label: Text("투표 해시",
+                                    style: AppTextStyle.tableAttribute),
+                              ),
+                              DataColumn(
+                                  label: Text("투표 선택지",
+                                      style: AppTextStyle.tableAttribute)),
+                              DataColumn(
+                                  label: Text("투표 시간 (KST)",
+                                      style: AppTextStyle.tableAttribute)),
                             ],
                             rows: blockResponse.block.transactions.map((tx) {
                               String time =
@@ -143,7 +151,8 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                                   DataCell(
                                     Row(
                                       children: [
-                                        Text(tx.hash),
+                                        Text(tx.hash,
+                                            style: AppTextStyle.tableTuple),
                                         buildCopyIconButton(context, tx.hash)
                                       ],
                                     ),
@@ -151,14 +160,16 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
                                   DataCell(
                                     Row(
                                       children: [
-                                        Text(tx.option),
+                                        Text(tx.option,
+                                            style: AppTextStyle.tableTuple),
                                         buildCopyIconButton(context, tx.hash)
                                       ],
                                     ),
                                   ),
                                   DataCell(Row(
                                     children: [
-                                      Text(time),
+                                      Text(time,
+                                          style: AppTextStyle.tableTuple),
                                       buildCopyIconButton(context, time),
                                     ],
                                   )),
