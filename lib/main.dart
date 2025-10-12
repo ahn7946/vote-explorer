@@ -2,22 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screen/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // 로컬 폰트 강제 프리로드
-  final jetbrainsLoader = FontLoader('JetBrainsMono')
-    ..addFont(rootBundle.load('assets/fonts/JetBrainsMono-wght.ttf'));
-  final notoSansLoader = FontLoader('NotoSansKR')
-    ..addFont(rootBundle.load('assets/fonts/NotoSansKR-VariableFont_wght.ttf'));
-
-  await Future.wait([
-    jetbrainsLoader.load(),
-    notoSansLoader.load(),
-  ]);
-
   runApp(ProviderScope(child: const MyApp()));
 }
 
@@ -39,10 +28,7 @@ class MyApp extends StatelessWidget {
       scrollBehavior: MyCustomScrollBehavior(),
       title: 'VeriVote Explorer',
       theme: ThemeData(
-        textTheme: const TextTheme(
-          titleMedium: TextStyle(fontSize: 20),
-          bodyMedium: TextStyle(fontSize: 16),
-        ),
+        textTheme: GoogleFonts.getTextTheme('Noto Sans KR'),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: false,
       ),
