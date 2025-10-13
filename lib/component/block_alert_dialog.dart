@@ -25,7 +25,7 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
 
     // 초 단위 + 나노초 분리
     final seconds = ts ~/ 1000000000;
-    final nanoseconds = ts % 1000000000;
+    // final nanoseconds = ts % 1000000000;
 
     // UTC 기준 → 한국시간(KST, UTC+9)
     final date =
@@ -34,7 +34,8 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
 
     // 보기 좋은 형식: "2025-07-14 09:08:05.889704400"
     final formatted =
-        "${DateFormat('yyyy-MM-dd HH:mm:ss').format(date)}.${nanoseconds.toString().padLeft(9, '0')}";
+        // "${DateFormat('yyyy-MM-dd HH:mm:ss').format(date)}.${nanoseconds.toString().padLeft(9, '0')}";
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(date);
 
     return formatted;
   }
