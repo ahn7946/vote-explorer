@@ -108,7 +108,7 @@ class _BlockAlertDialogState extends ConsumerState<BlockAlertDialog> {
     return LayoutBuilder(
       builder: (context, constraints) {
         // 화면 비율 기반 최대/최소 크기
-        final double maxWidth = constraints.maxWidth * 0.8;
+        final double maxWidth = constraints.maxWidth * 0.5;
         final double maxHeight = constraints.maxHeight * 0.6;
 
         return AlertDialog(

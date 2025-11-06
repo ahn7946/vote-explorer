@@ -71,7 +71,7 @@ class QueryAlertDialog extends ConsumerWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         const double minWidth = 100.0;
-        final double maxWidth = constraints.maxWidth * 0.8;
+        final double maxWidth = constraints.maxWidth * 0.5;
         final double maxHeight = constraints.maxHeight * 0.6;
 
         final List<double> columnWidths = widths
